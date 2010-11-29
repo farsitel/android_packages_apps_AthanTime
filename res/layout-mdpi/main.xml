@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:background="@drawable/background"
+	android:id="@+id/layout"
+	android:paddingTop="120px"
+	android:paddingLeft="50px"
+	android:paddingRight="50px"
+	android:paddingBottom="50px">
+	<com.farsitel.apps.limoo.views.PanelSwitcher
+		android:id="@+id/panelswitch" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_weight="4">
+
+		<LinearLayout android:id="@+id/tabcontent"
+			android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+
+
+			<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:id="@+id/athanLayout" android:stretchColumns="*">
+
+				<!-- <TableRow>
+					<TextView android:padding="3dip" android:id="@+id/latitudeID"
+						android:textColor="#000" />
+					<TextView android:text="@string/latitude" android:padding="3dip"
+						android:textColor="#000" />
+
+				</TableRow>
+
+				<TableRow>
+					<TextView android:padding="3dip" android:textColor="#000"
+						android:id="@+id/longitudeID" />
+					<TextView android:text="@string/longitude"
+						android:padding="3dip" android:textColor="#000" />
+
+				</TableRow> -->
+
+				<TableRow>
+					<TextView android:gravity="right" android:padding="3dip"
+						android:textColor="#000" android:id="@+id/fajrID" />
+					<TextView android:text="@string/fajr" android:padding="3dip"
+						android:textColor="#000" />
+
+				</TableRow>
+				<TableRow>
+					<TextView android:gravity="right" android:padding="3dip"
+						android:textColor="#000" android:id="@+id/sunriseID" />
+					<TextView android:text="@string/sunrise" android:padding="3dip"
+						android:textColor="#000" />
+
+				</TableRow>
+				<TableRow>
+					<TextView android:gravity="right" android:padding="3dip"
+						android:textColor="#000" android:id="@+id/noonID" />
+					<TextView android:text="@string/noon" android:padding="3dip"
+						android:textColor="#000" />
+
+				</TableRow>
+				<!-- <TableRow> <TextView android:text="@string/asr" android:padding="3dip" 
+					/> <TextView android:gravity="right" android:padding="3dip" android:id="@+id/eveningAthanID" 
+					/> </TableRow> -->
+				<TableRow>
+					<TextView android:gravity="right" android:padding="3dip"
+						android:textColor="#000" android:id="@+id/nightID" />
+					<TextView android:text="@string/night" android:padding="3dip"
+						android:textColor="#000" />
+
+				</TableRow>
+				<TableRow>
+					<TextView android:gravity="right" android:padding="3dip"
+						android:textColor="#000" android:id="@+id/nightAthanID" />
+					<TextView android:text="@string/nightAthan"
+						android:textColor="#000" android:padding="3dip" />
+
+				</TableRow>
+				<!-- <TableRow> <TextView android:text="@string/midnight" android:padding="3dip" 
+					/> <TextView android:gravity="right" android:padding="3dip" android:id="@+id/midnightID" 
+					/> </TableRow> -->
+			</TableLayout>
+			<LinearLayout android:layout_width="fill_parent"
+			android:layout_height="fill_parent" android:orientation="vertical">
+			<TextView android:gravity="right" android:padding="3dip"
+				android:textColor="#000" android:layout_width="fill_parent"
+				android:layout_height="fill_parent" android:id="@+id/todayID" />
+		</LinearLayout>
+		</LinearLayout>
+		
+
+
+
+
+
+
+
+		<LinearLayout android:id="@+id/tabcontent2"
+			android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+
+
+			<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:id="@+id/athanLayout2" android:stretchColumns="*">
+
+				<!-- <TableRow>
+					<TextView android:padding="3dip" android:id="@+id/latitudeID2"
+						android:textColor="#000" />
+					<TextView android:text="@string/latitude" android:padding="3dip"
+						android:textColor="#000" />
+
+				</TableRow>
+
+				<TableRow>
+					<TextView android:padding="3dip" android:textColor="#000"
+						android:id="@+id/longitudeID2" />
+					<TextView android:text="@string/longitude"
+						android:padding="3dip" android:textColor="#000" />
+
+				</TableRow> -->
+
+				<TableRow>
+					<TextView android:gravity="right" android:padding="3dip"
+						android:textColor="#000" android:id="@+id/fajrID2" />
+					<TextView android:text="@string/fajr" android:padding="3dip"
+						android:textColor="#000" />
+
+				</TableRow>
+				<TableRow>
+					<TextView android:gravity="right" android:padding="3dip"
+						android:textColor="#000" android:id="@+id/sunriseID2" />
+					<TextView android:text="@string/sunrise" android:padding="3dip"
+						android:textColor="#000" />
+
+				</TableRow>
+				<TableRow>
+					<TextView android:gravity="right" android:padding="3dip"
+						android:textColor="#000" android:id="@+id/noonID2" />
+					<TextView android:text="@string/noon" android:padding="3dip"
+						android:textColor="#000" />
+
+				</TableRow>
+				<!-- <TableRow> <TextView android:text="@string/asr" android:padding="3dip" 
+					/> <TextView android:gravity="right" android:padding="3dip" android:id="@+id/eveningAthanID" 
+					/> </TableRow> -->
+				<TableRow>
+					<TextView android:gravity="right" android:padding="3dip"
+						android:textColor="#000" android:id="@+id/nightID2" />
+					<TextView android:text="@string/night" android:padding="3dip"
+						android:textColor="#000" />
+
+				</TableRow>
+				<TableRow>
+					<TextView android:gravity="right" android:padding="3dip"
+						android:textColor="#000" android:id="@+id/nightAthanID2" />
+					<TextView android:text="@string/nightAthan"
+						android:textColor="#000" android:padding="3dip" />
+
+				</TableRow>
+				<!-- <TableRow> <TextView android:text="@string/midnight" android:padding="3dip" 
+					/> <TextView android:gravity="right" android:padding="3dip" android:id="@+id/midnightID" 
+					/> </TableRow> -->
+			</TableLayout>
+		</LinearLayout>
+		
+
+
+
+
+	</com.farsitel.apps.limoo.views.PanelSwitcher>
+
+
+</LinearLayout>
