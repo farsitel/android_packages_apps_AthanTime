@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.farsitel.apps.limoo.R;
 import com.farsitel.apps.limoo.data.AthanTime;
@@ -23,6 +25,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.format.Jalali;
 import android.text.format.JalaliDate;
@@ -36,15 +40,33 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import com.farsitel.apps.limoo.views.*;
 
 public class AthanTimeActivity extends Activity implements LocationListener,
-        OnSharedPreferenceChangeListener,OnClickListener {
+        OnSharedPreferenceChangeListener, OnClickListener {
     /** Called when the activity is first created. */
     PanelSwitcher panelSwitcher;
     private static final int TODAY_PANEL = 1;
     private static final int TOMORROW_PANEL = 2;
+    public static final int DATE_CHANGED = 1;
+    public Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            switch (msg.what) {
+            case DATE_CHANGED:
+                if (previousLocation != null) {
+                    onLocationChanged(previousLocation);
+                    previousDate = msg.arg1;
+                }
+            }
+        }
+
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,32 +74,59 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         panelSwitcher = (PanelSwitcher) findViewById(R.id.panelswitch);
 
         setContentView(R.layout.main);
+        uiSetup();
         Context context = getApplicationContext();
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(context);
         prefs.registerOnSharedPreferenceChangeListener(this);
+        boolean isGPS = isGPSOn();
+        if (isGPS)
+            registerListener();
+        else
+            useDefaultLocation(prefs,
+                    getString(R.string.state_location_pref_key));
+        Button nextBtn = (Button) findViewById(R.id.nextBtn);
+        Button previousBtn = (Button) findViewById(R.id.previous);
+        nextBtn.setOnClickListener(this);
+        previousBtn.setOnClickListener(this);
+        TimerTask dateChecker = new TimerTask() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                Calendar c = Calendar.getInstance();
+                int date = c.get(Calendar.DATE);
+
+                if (date != previousDate || previousDate < 0) {
+                    Message msg = mHandler.obtainMessage();
+                    msg.what = DATE_CHANGED;
+                    msg.arg1 = date;
+                    mHandler.sendMessage(msg);
+                }
+            }
+
+        };
+        Timer timer = new Timer();
+        timer.schedule(dateChecker, 0, 10 * 1000);
+    }
+
+    public boolean isGPSOn() {
         String gpsPerfKey = getString(R.string.gps_pref_key);
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
         boolean isGPS = false;
         try {
             isGPS = prefs.getBoolean(gpsPerfKey, false);
         } catch (ClassCastException e) {
             isGPS = Boolean.parseBoolean(prefs.getString(gpsPerfKey, "false"));
         }
-        if (isGPS)
-            registerListener();
-        else
-            useDefaultLocation(prefs,
-                    getString(R.string.state_location_pref_key));
-        Button nextBtn = (Button)findViewById(R.id.nextBtn);
-        Button previousBtn = (Button)findViewById(R.id.previous);
-        nextBtn.setOnClickListener(this);
-        previousBtn.setOnClickListener(this);
+        return isGPS;
     }
 
     public boolean isRegistered = false;
 
     private void registerListener() {
-        if (!isRegistered) {
+        if (!isRegistered && isGPSOn()) {
             ((LocationManager) getSystemService(Context.LOCATION_SERVICE))
                     .requestLocationUpdates(LocationManager.GPS_PROVIDER,
                             ConstantUtil.MIN_LOCATION_TIME,
@@ -96,19 +145,139 @@ public class AthanTimeActivity extends Activity implements LocationListener,
 
     AthanTimeCalculator athanTime = null;
     private Location previousLocation = null;
+    private int previousDate = -1;
+
+    private boolean isDateChanged(Calendar c) {
+        if (previousDate != c.get(Calendar.DATE))
+            return false;
+        else
+            return true;
+    }
+
+    private void uiSetup() {
+        TextView todayFajr = (TextView) findViewById(R.id.fajrID);
+        TextView todaySunrise = (TextView) findViewById(R.id.sunriseID);
+        TextView todayDhuhr = (TextView) findViewById(R.id.noonID);
+        TextView todaySunset = (TextView) findViewById(R.id.nightID);
+        TextView todayMaghrib = (TextView) findViewById(R.id.nightAthanID);
+        TextView tomorrowFajr = (TextView) findViewById(R.id.fajrID2);
+        TextView tomorrowSunrise = (TextView) findViewById(R.id.sunriseID2);
+        TextView tomorrowDhuhr = (TextView) findViewById(R.id.noonID2);
+        TextView tomorrowSunset = (TextView) findViewById(R.id.nightID2);
+        TextView tomorrowMaghrib = (TextView) findViewById(R.id.nightAthanID2);
+        TextView todayText = (TextView) findViewById(R.id.todayID);
+        TextView tomorrowText = (TextView) findViewById(R.id.tommorrowId);
+        TextView todayDateText = (TextView) findViewById(R.id.todayDate);
+        TextView tomorrowDateText = (TextView) findViewById(R.id.tommorrowDate);
+
+        TextView todayFajrStr = (TextView) findViewById(R.id.fajrStr);
+        TextView todaySunriseStr = (TextView) findViewById(R.id.sunriseStr);
+        TextView todayDhuhrStr = (TextView) findViewById(R.id.noonStr);
+        TextView todaySunsetStr = (TextView) findViewById(R.id.nightStr);
+        TextView todayMaghribStr = (TextView) findViewById(R.id.nightAthanStr);
+        TextView tomorrowFajrStr = (TextView) findViewById(R.id.fajrStr2);
+        TextView tomorrowSunriseStr = (TextView) findViewById(R.id.sunriseStr2);
+        TextView tomorrowDhuhrStr = (TextView) findViewById(R.id.noonStr2);
+        TextView tomorrowSunsetStr = (TextView) findViewById(R.id.nightStr2);
+        TextView tomorrowMaghribStr = (TextView) findViewById(R.id.nightAthanStr2);
+
+        int paddingBottom = 25;
+        int paddingTop = 0;
+        int paddingRight = 0;
+        int paddingLeft = 0;
+        //
+        todayFajr.setPadding(paddingLeft, paddingTop, paddingRight,
+                paddingBottom);
+        todaySunrise.setPadding(paddingLeft, paddingTop, paddingRight,
+                paddingBottom);
+        todayDhuhr.setPadding(paddingLeft, paddingTop, paddingRight,
+                paddingBottom);
+        todaySunset.setPadding(paddingLeft, paddingTop, paddingRight,
+                paddingBottom);
+        todayMaghrib.setPadding(paddingLeft, paddingTop, paddingRight,
+                paddingBottom);
+        tomorrowFajr.setPadding(paddingLeft, paddingTop, paddingRight,
+                paddingBottom);
+        tomorrowSunrise.setPadding(paddingLeft, paddingTop, paddingRight,
+                paddingBottom);
+        tomorrowDhuhr.setPadding(paddingLeft, paddingTop, paddingRight,
+                paddingBottom);
+        tomorrowSunset.setPadding(paddingLeft, paddingTop, paddingRight,
+                paddingBottom);
+        tomorrowMaghrib.setPadding(paddingLeft, paddingTop, paddingRight,
+                paddingBottom);
+        todayText.setPadding(paddingLeft, paddingTop, paddingRight, 10);
+        tomorrowText.setPadding(paddingLeft, paddingTop, paddingRight, 10);
+        todayDateText.setPadding(paddingLeft, paddingTop, paddingRight, 33);
+        tomorrowDateText.setPadding(paddingLeft, paddingTop, paddingRight, 33);
+        //
+        todayFajr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todaySunrise.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todayDhuhr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todaySunset.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todayMaghrib.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowFajr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowSunrise.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowDhuhr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowSunset.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowMaghrib.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todayText.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowText.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todayDateText.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowDateText.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        //
+        todayFajrStr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todaySunriseStr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todayDhuhrStr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todaySunsetStr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todayMaghribStr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowFajrStr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowSunriseStr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowDhuhrStr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowSunsetStr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowMaghribStr.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+
+    }
 
     @Override
     public void onLocationChanged(Location location) {
         panelSwitcher = (PanelSwitcher) findViewById(R.id.panelswitch);
-        if (previousLocation == null || isFarEnough(location, previousLocation)) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getDefault());
+        c.setTimeInMillis(System.currentTimeMillis());
+        if ((previousLocation == null)
+                || (isFarEnough(location, previousLocation))
+                || isDateChanged(c)) {
             if (athanTime == null) {
                 athanTime = new AthanTimeCalculator();
                 athanTime = prepareAthanCalculator(athanTime);
                 previousLocation = location;
             }
-            Calendar c = Calendar.getInstance();
-            c.setTimeZone(TimeZone.getDefault());
-            c.setTimeInMillis(System.currentTimeMillis());
+
             athanTime.setCalcMethod(athanTime.Jafari);
             athanTime.setAsrJuristic(athanTime.Shafii);
             athanTime.setAdjustHighLats(athanTime.AngleBased);
@@ -145,8 +314,6 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getDefault());
         c.setTimeInMillis(System.currentTimeMillis());
-       
-        
 
         fajr = (TextView) findViewById(R.id.fajrID);
         sunrise = (TextView) findViewById(R.id.sunriseID);
@@ -154,108 +321,106 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         sunset = (TextView) findViewById(R.id.nightID);
         maghrib = (TextView) findViewById(R.id.nightAthanID);
         datePrefixText = (TextView) findViewById(R.id.todayID);
-        // latitude = (TextView) findViewById(R.id.latitudeID);
-
-        // longitude = (TextView) findViewById(R.id.longitudeID);
-       datePrefixText.setText( getString(R.string.today)+ " " + getFormattedDate(c));
-//        datePrefixText.setText(String.format(getString(R.string.today) +" %Ld " +Jalali.getLongMonthName(c.get(Calendar.MONTH)) + " ماه %Ld",c.get(Calendar.DATE),c.get(Calendar.YEAR)));
+        dateText =(TextView) findViewById(R.id.todayDate);
+        datePrefixText.setText(getString(R.string.today));
+        dateText.setText(getFormattedDate(c));
+        // datePrefixText.setText(String.format(getString(R.string.today)
+        // +" %Ld " +Jalali.getLongMonthName(c.get(Calendar.MONTH)) +
+        // " ماه %Ld",c.get(Calendar.DATE),c.get(Calendar.YEAR)));
         fajr.setText(getTimeForPrint(todayPrayerTimes.getFajr()));
         sunrise.setText(getTimeForPrint(todayPrayerTimes.getSunrise()));
         duhr.setText(getTimeForPrint(todayPrayerTimes.getDhuhr()));
         sunset.setText(getTimeForPrint(todayPrayerTimes.getSunset()));
         maghrib.setText(getTimeForPrint(todayPrayerTimes.getMaghrib()));
-        fajr.setTypeface(Typeface.DEFAULT_BOLD);
-        sunrise.setTypeface(Typeface.DEFAULT_BOLD);
-        duhr.setTypeface(Typeface.DEFAULT_BOLD);
-        sunset.setTypeface(Typeface.DEFAULT_BOLD);
-        maghrib.setTypeface(Typeface.DEFAULT_BOLD);
-        // today.setText(" today " + c.get(Calendar.YEAR) + "/"
-        // + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DATE)
-        // + " Ho " + effective + " hi " + TimeZone.getDefault()
-        // + getTitle());
-        // Log.w(ATHAN_TIME_LOG, "go" + effective + " ");
-
-        // longitude.setText(getLocationForPrint(previousLocation.getLongitude(),
-        // false));
+        //
         c.add(Calendar.DATE, 1);
         fajr = (TextView) findViewById(R.id.fajrID2);
         sunrise = (TextView) findViewById(R.id.sunriseID2);
         duhr = (TextView) findViewById(R.id.noonID2);
         sunset = (TextView) findViewById(R.id.nightID2);
         maghrib = (TextView) findViewById(R.id.nightAthanID2);
-        datePrefixText = (TextView)findViewById(R.id.tommorrowId);
-//        datePrefixText = (TextView) findViewById(R.id.to);
+        datePrefixText = (TextView) findViewById(R.id.tommorrowId);
+        dateText = (TextView)findViewById(R.id.tommorrowDate);
+        // datePrefixText = (TextView) findViewById(R.id.to);
         // latitude = (TextView) findViewById(R.id.latitudeID2);
         // longitude = (TextView) findViewById(R.id.longitudeID2);
-       
-        datePrefixText.setText(getString(R.string.tomorrow)+" " +getFormattedDate(c));
+
+        datePrefixText.setText(getString(R.string.tomorrow));
+        dateText.setText(getFormattedDate(c));
         fajr.setText(getTimeForPrint(tommorowPrayerTimes.getFajr()));
         sunrise.setText(getTimeForPrint(tommorowPrayerTimes.getSunrise()));
         duhr.setText(getTimeForPrint(tommorowPrayerTimes.getDhuhr()));
         sunset.setText(getTimeForPrint(tommorowPrayerTimes.getSunset()));
         maghrib.setText(getTimeForPrint(tommorowPrayerTimes.getMaghrib()));
-        fajr.setTypeface(Typeface.DEFAULT_BOLD);
-        sunrise.setTypeface(Typeface.DEFAULT_BOLD);
-        duhr.setTypeface(Typeface.DEFAULT_BOLD);
-        sunset.setTypeface(Typeface.DEFAULT_BOLD);
-        maghrib.setTypeface(Typeface.DEFAULT_BOLD);
+        // fajr.setTypeface(Typeface.DEFAULT_BOLD);
+        // sunrise.setTypeface(Typeface.DEFAULT_BOLD);
+        // duhr.setTypeface(Typeface.DEFAULT_BOLD);
+        // sunset.setTypeface(Typeface.DEFAULT_BOLD);
+        // maghrib.setTypeface(Typeface.DEFAULT_BOLD);
 
     }
 
     // @Override
-     public boolean onTouchEvent(MotionEvent event) {
-     // TODO Auto-generated method stub
-     super.onTouchEvent(event);
-     panelSwitcher = (PanelSwitcher) findViewById(R.id.panelswitch);
-     boolean isTurned = panelSwitcher.onTouchEvent(event);
-     //rebuildForPanelChange(panelSwitcher);
-     return isTurned;
-    
-     }
-    //
-    
-    private String getFormattedDate(Calendar c){
-        int year = c.get(Calendar.YEAR);int month = c.get(Calendar.MONTH); int date = c.get(Calendar.DATE);
-        
-        JalaliDate jDate = Jalali.gregorianToJalali(year, month, date);
-        String monthName = Jalali.getLongMonthName(jDate.month);
-        date= jDate.day;
-        year = jDate.year;
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        String dayOfWeekStr = "";
-        switch(dayOfWeek){
-        case 0:
-            break;
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        case 6:
-            break;
-            
-                
-        }
-        int postKey =R.string.forth_above;;
-        switch (date){
-            case 1:
-                postKey=R.string.first;
-                break;
-            case 2:
-                postKey = R.string.second;
-                break;
-            case 3:
-                postKey = R.string.third;
-                break;
-        }
-//        return "" + android.text.format.DateFormat.format(getString(R.string.dateInFormat), c,this);
-        return String.format("%s %Ld%s %s %Ld",dayOfWeekStr, date,getString(postKey),monthName,year);
+    public boolean onTouchEvent(MotionEvent event) {
+        // TODO Auto-generated method stub
+        super.onTouchEvent(event);
+        panelSwitcher = (PanelSwitcher) findViewById(R.id.panelswitch);
+        boolean isTurned = panelSwitcher.onTouchEvent(event);
+        // rebuildForPanelChange(panelSwitcher);
+        return isTurned;
+
     }
+
+    //
+
+    private String getFormattedDate(Calendar c) {
+        // int year = c.get(Calendar.YEAR);int month = c.get(Calendar.MONTH);
+        // int date = c.get(Calendar.DATE);
+        //
+        // JalaliDate jDate = Jalali.gregorianToJalali(year, month, date);
+        // String monthName = Jalali.getLongMonthName(jDate.month);
+        // date= jDate.day;
+        // year = jDate.year;
+        // int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        // String dayOfWeekStr = "";
+        // switch(dayOfWeek){
+        // case 0:
+        // break;
+        // case 1:
+        // break;
+        // case 2:
+        // break;
+        // case 3:
+        // break;
+        // case 4:
+        // break;
+        // case 5:
+        // break;
+        // case 6:
+        // break;
+        //
+        //
+        // }
+        // int postKey =R.string.forth_above;;
+        // switch (date){
+        // case 1:
+        // postKey=R.string.first;
+        // break;
+        // case 2:
+        // postKey = R.string.second;
+        // break;
+        // case 3:
+        // postKey = R.string.third;
+        // break;
+        // }
+//        String formatString = android.text.format.DateFormat
+//                .getDateFormatStringForSetting(this,"dd MMMM yyyy");
+        return ""
+                + android.text.format.DateFormat.format("d MMM yyy", c.getTimeInMillis(), this);
+        // return String.format("%s %Ld%s %s %Ld",dayOfWeekStr,
+        // date,getString(postKey),monthName,year);
+    }
+
     private String getTimeForPrint(DayTime dayTime) {
         int hour = dayTime.getHour();
         int minute = dayTime.getMinute();
@@ -358,17 +523,19 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         int aboutGroupID = 0;
         int helpGroupID = 1;
         int prefsGroupID = 2;
-        int aboutItemOrder = Menu.FIRST;
+        int aboutItemOrder = 3;
         int helpItemOrder = 2;
-        int prefsItemOrder = 3;
-       
-       
+        int prefsItemOrder = Menu.FIRST;
+
         MenuItem prefsMenuItem = menu.add(prefsGroupID, MENU_PREFS,
                 prefsItemOrder, R.string.prefs_menu_title);
+        prefsMenuItem.setIcon(R.drawable.settings);
         MenuItem helpMenuItem = menu.add(helpGroupID, MENU_HELP, helpItemOrder,
                 R.string.help_menu_title);
+        helpMenuItem.setIcon(R.drawable.help);
         MenuItem aboutMenuItem = menu.add(aboutGroupID, MENU_ABOUT,
                 aboutItemOrder, R.string.about_menu_title);
+        aboutMenuItem.setIcon(R.drawable.about);
         return true;
     }
 
@@ -580,15 +747,15 @@ public class AthanTimeActivity extends Activity implements LocationListener,
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
-       int id = v.getId();
-       PanelSwitcher panel = (PanelSwitcher)findViewById(R.id.panelswitch);
-       switch(id){
-       case R.id.previous:
-           panel.moveLeft();
-           break;
-       case R.id.nextBtn:
-           panel.moveRight();
-       }
+        int id = v.getId();
+        PanelSwitcher panel = (PanelSwitcher) findViewById(R.id.panelswitch);
+        switch (id) {
+        case R.id.previous:
+            panel.moveLeft();
+            break;
+        case R.id.nextBtn:
+            panel.moveRight();
+        }
     }
 
 }
