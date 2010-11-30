@@ -321,7 +321,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         sunset = (TextView) findViewById(R.id.nightID);
         maghrib = (TextView) findViewById(R.id.nightAthanID);
         datePrefixText = (TextView) findViewById(R.id.todayID);
-        dateText =(TextView) findViewById(R.id.todayDate);
+        dateText = (TextView) findViewById(R.id.todayDate);
         datePrefixText.setText(getString(R.string.today));
         dateText.setText(getFormattedDate(c));
         // datePrefixText.setText(String.format(getString(R.string.today)
@@ -340,7 +340,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         sunset = (TextView) findViewById(R.id.nightID2);
         maghrib = (TextView) findViewById(R.id.nightAthanID2);
         datePrefixText = (TextView) findViewById(R.id.tommorrowId);
-        dateText = (TextView)findViewById(R.id.tommorrowDate);
+        dateText = (TextView) findViewById(R.id.tommorrowDate);
         // datePrefixText = (TextView) findViewById(R.id.to);
         // latitude = (TextView) findViewById(R.id.latitudeID2);
         // longitude = (TextView) findViewById(R.id.longitudeID2);
@@ -413,10 +413,11 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         // postKey = R.string.third;
         // break;
         // }
-//        String formatString = android.text.format.DateFormat
-//                .getDateFormatStringForSetting(this,"dd MMMM yyyy");
+        // String formatString = android.text.format.DateFormat
+        // .getDateFormatStringForSetting(this,"dd MMMM yyyy");
         return ""
-                + android.text.format.DateFormat.format("d MMM yyy", c.getTimeInMillis(), this);
+                + android.text.format.DateFormat.format("d MMM yyy",
+                        c.getTimeInMillis(), this);
         // return String.format("%s %Ld%s %s %Ld",dayOfWeekStr,
         // date,getString(postKey),monthName,year);
     }
@@ -751,10 +752,16 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         PanelSwitcher panel = (PanelSwitcher) findViewById(R.id.panelswitch);
         switch (id) {
         case R.id.previous:
-            panel.moveLeft();
+            if (panel.isRTL())
+                panel.moveLeft();
+            else
+                panel.moveRight();
             break;
         case R.id.nextBtn:
-            panel.moveRight();
+            if (panel.isRTL())
+                panel.moveRight();
+            else
+                panel.moveLeft();
         }
     }
 

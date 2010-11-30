@@ -5,7 +5,7 @@
 	<string name="dailyActivity">Daily Activity</string>
 	<string name="zekr_shortcut">z</string>
 	<string name="fajr">Fijr </string>
-	<string name="sunrise">Sunset</string>
+	<string name="sunrise">Sunrise</string>
 	<string name="noon">Dhuhr</string>
 	<string name="asr">Asr</string>
 	<string name="night">Sunset</string>
@@ -15,12 +15,6 @@
 	<string name="calc_method_ut">محاسبه طبق روش دانشگاه تهران</string>
 	<string name="jafari_shortcut">j</string>
 	<string name="ut_shortcut">t</string>
-	<string name="latitude">عرض جغرافیایی</string>
-	<string name="longitude">طول جغرافیایی</string>
-	<string name="today">امروز</string>
-	<string name="hijri_shamsi">هجری شمسی</string>
-	<string name="miladi">میلادی</string>
-	<string name="gregorian">معادل با</string>
 	<string name="gps_prompt">GPS</string>
 	<string name="gps_summary">Use GPS to locate your mobile device</string>
 	<string name="state_location_title">set Location Manually</string>
@@ -63,6 +57,9 @@
 <string name="second">nd</string>
 <string name="third">rd</string>
 <string name="forth_above">th</string>
-<string name="tomorrow">tomorrow</string>
+<string name="tomorrow">Tomorrow</string>
+<string name="today">Today</string>
+<string name="previous">Previous day</string>
+<string name="next">Next day</string>
 
 </resources>

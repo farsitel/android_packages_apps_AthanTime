@@ -69,6 +69,5 @@
 <string name="tomorrow">فردا</string>
 <string name="previous">روز قبل</string>
 <string name="next">روز بعد</string>
-<string name="dateInFormat">امروز DDام MM ماه سال YYYY</string>
 
 </resources>
