@@ -1,38 +1,36 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">اوقات شرعی</string>
-	<string name="athan">اوقات شرعی</string>
-	<string name="dailyActivity">اعمال یومیه</string>
-	<string name="zekr_shortcut">z</string>
+
 	<string name="fajr">اذان صبح</string>
 	<string name="sunrise">طلوع آفتاب</string>
 	<string name="noon">اذان ظهر</string>
 	<string name="asr">اذان عصر</string>
 	<string name="night">غروب آفتاب</string>
 	<string name="nightAthan">اذان مغرب</string>
-	<string name="midnight">نیمه شب شرعی</string>
-	<string name="calc_method_JAFARI">محاسبه به روش شیعهٔ اثنی اشری</string>
-	<string name="calc_method_ut">محاسبه به روش دانشگاه تهران</string>
-	<string name="jafari_shortcut">j</string>
-	<string name="ut_shortcut">t</string>
-	<string name="latitude">عرض جغرافیایی</string>
-	<string name="longitude">طول جغرافیایی</string>
+	<string name="midnight">نیمه‌شب شرعی</string>
+
 	<string name="today">امروز</string>
-	<string name="hijri_shamsi">هجری شمسی</string>
-	<string name="miladi">میلادی</string>
-	<string name="gregorian">برابر با</string>
-	<string name="gps_prompt">جی‌پی‌اس</string>
-	<string name="gps_summary">استفاده از موقعیت‌یاب جی‌پی‌اس برای تعیین موقعیت دستگاه</string>
-	<string name="state_location_title">تعیین دستی موقعیت</string>
-	<string name="state_location_summary">اگر موقعیتتان را با انتخاب یکی از مراکز استان ایران تعیین کنید باتری کمتری مصرف خواهد شد.</string>
-	<string name="gps_pref_key">GPS_LOCATION_PREF</string>
-	<string name="release_date">۱۹ آذر ۱۳۸۹\n</string>
-	<string name="version">نسخهٔ ۱٫۰</string>
+    <string name="tomorrow">فردا</string>
+    <string name="be_ofogh">به افق %s</string>
+
+	<string name="gps_prompt">استفاده از جی‌پی‌اس</string>
+	<string name="gps_summary">مشخص کردن موقعیت جغرافیایی با استفاده از ماهواره‌های جی‌پی‌اس</string>
+
+	<string name="no_location_yet">کمی صبر کنید تا موقعیت جغرافیایی شما مشخص\nشود، یا در تنظیمات، نام شهر خود را انتخاب کنید.</string>
+	<string name="state_location_title">تنظیم دستی موقعیت جغرافیایی</string>
+	<string name="state_location_summary">اگر در یکی از مراکز استان‌ها هستید شهر خود را انتخاب کنید.</string>
+
+    <!-- Do not translate next two messages, it is used for other reasons -->
 	<string name="state_location_pref_key">state_LOCATION_PREF</string>
-	<string name="preference_title">تنظیمات اوقات شرعی</string>
-	<string name="about_menu_title">درباره</string>
-	<string name="help_menu_title">راهنما</string>
+	<string name="gps_pref_key">GPS_LOCATION_PREF</string>
+
+	<string name="release_date">۶ دی ۱۳۸۹\n</string>
+	<string name="version">نسخهٔ ۱٫۱</string>
+
 	<string name="prefs_menu_title">تنظیمات</string>
+	<string name="about_menu_title">درباره</string>
+
 	<string name="about_title_text">\nدربارهٔ اوقات شرعی</string>
 	<string name="help_text"><font fgcolor="#ffffffff"><b>راهنمای استفاده از برنامهٔ اوقات شرعی</b></font>\n\n
 	برنامهٔ اوقات شرعی، بر مبنای روش‌ ریاضی به محاسبهٔ اوقات شرعی برای کلیه مسلمانان می‌پردازد. اکثر رخدادهای نجومی با دقت زیر یک دقیقه قابل پیش‌بینی هستند ولی در محاسبه اوقات شرعی دو مشکل وجود دارد:\n\n
@@ -51,19 +49,8 @@
 	</string>
 	<string name="about_text">\nاوقات شرعی، زمان‌ نمازهای پنج‌گانه را برای مسلمانان مشخص می‌سازد. با برنامهٔ <font fgcolor="#ffffffff"><b>اوقات شرعی</b></font> می‌توانید از این زمان‌ها برای محلی که در آن قرار دارید مطلع شوید.\n\n
 
-تمامی حقوق مادی  و معنوی این برنامه متعلق به شرکت <font fgcolor="#ffffffff"><b>همراه همزبان ایرانیان</b></font> است. مبنای محاسبهٔ اوقات شرعی بر اساس الگوریتم ارائه شده در وبگاه <font fgcolor="#ffffffff"><b>تنزیل</b></font> است که برای استفادهٔ عموم عرضه شده است.\n\n
+تمامی حقوق مادی  و معنوی این برنامه متعلق به شرکت <font fgcolor="#ffffffff"><b>همراه همزبان ایرانیان</b></font> است. مبنای محاسبهٔ اوقات شرعی الگوریتم ارائه شده در وبگاه <font fgcolor="#ffffffff"><b>تنزیل</b></font> است که برای استفادهٔ عموم عرضه شده است.\n\n
 
 برای آشنایی بیشتر با <font fgcolor="#ffffffff"><b>فارسی‌تل</b></font> به <font fgcolor="#ff749c00"><a href="http://farsitel.com/fa/" fgcolor="749C00FF">http://farsitel.com/</a></font>‎ سر بزنید.\n\n
 </string>	
-<string name="latitude_north">شمالی</string>
-<string name="latitude_south">جنوبی</string>
-<string name="longitude_east">شرقی</string>
-<string name="longitude_west">غربی</string>
-
-<string name="first">ام</string>
-<string name="second">ام</string>
-<string name="third">ام</string>
-<string name="forth_above">ام</string>
-<string name="tomorrow">فردا</string>
-
 </resources>

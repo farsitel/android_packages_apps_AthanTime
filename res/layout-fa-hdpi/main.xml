@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:background="@drawable/background"
-	android:id="@+id/layout" android:paddingTop="230px"
+	android:id="@+id/layout" android:paddingTop="200px"
 	android:paddingLeft="80px" android:paddingRight="80px"
 	android:paddingBottom="80px">
 	<com.farsitel.apps.athantime.views.PanelSwitcher
@@ -13,16 +13,36 @@
 			<LinearLayout android:layout_width="fill_parent"
 				android:layout_height="fill_parent" android:orientation="vertical">
 				<RelativeLayout android:layout_width="fill_parent"
-					android:layout_height="wrap_content">
-					<TextView android:gravity="center" android:padding="3dip"
+					android:layout_height="wrap_content" android:paddingBottom="30px">
+					<Button
+							android:textColor="#000" android:background="@drawable/forward"
+							android:layout_width="77px" android:layout_height="53px"
+							android:layout_marginLeft="220px"
+							android:id="@+id/nextBtn" />
+					<TextView android:gravity="center" 
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
 						android:id="@+id/todayID" />
-					<Button android:gravity="center"
-						android:layout_alignParentRight="true" android:paddingRight="8dip"
-						android:textColor="#000" android:background="@drawable/forward_left"
-						android:layout_width="48px" android:layout_height="48px"
-						android:id="@+id/nextBtn" android:layout_toLeftOf="@id/todayID" />
+					<TextView android:gravity="center" 
+						android:layout_centerHorizontal="true" android:textColor="#000"
+						android:layout_width="wrap_content" android:layout_height="wrap_content"
+						android:layout_below="@id/todayID" android:id="@+id/todayTextID" />
+					<TextView android:gravity="center" 
+						android:layout_centerHorizontal="true" android:textColor="#000"
+						android:layout_width="wrap_content" android:layout_height="wrap_content"
+						android:layout_below="@id/todayTextID" android:id="@+id/LocationTextID" />
+					
+					
+					
+					<!-- <TextView android:gravity="center" android:padding="3dip"
+						android:layout_centerHorizontal="true"
+						android:layout_width="wrap_content" android:layout_height="wrap_content"
+						android:id="@+id/todayID" />
+					
+					<TextView android:gravity="center" android:padding="3dip"
+						android:layout_centerHorizontal="true" android:textColor="#000"
+						android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/todayID"
+						android:id="@+id/todayTextID" /> -->
 				</RelativeLayout>
 
 
@@ -86,17 +106,45 @@
 			<LinearLayout android:layout_width="fill_parent"
 				android:layout_height="fill_parent" android:orientation="vertical">
 				<RelativeLayout android:layout_width="fill_parent"
-					android:layout_height="wrap_content">
+					android:layout_height="wrap_content" android:paddingBottom="30px">
+					
+					
+					<Button
+						android:layout_marginLeft="15px"
+						android:textColor="#000" android:background="@drawable/backward"
+						android:layout_width="77px" android:layout_height="53px" 
+						android:id="@+id/previous" />
 					<TextView android:gravity="center" android:padding="3dip"
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
+						android:id="@+id/tommorrowId" />		
+					<TextView android:gravity="center" android:padding="3dip"
+						android:layout_centerHorizontal="true" android:textColor="#000"
+						android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/tommorrowId"
+						android:id="@+id/tommorrowTextID" />
+					<TextView android:gravity="center" 
+						android:layout_centerHorizontal="true" android:textColor="#000"
+						android:layout_width="wrap_content" android:layout_height="wrap_content"
+						android:layout_below="@id/tommorrowTextID" android:id="@+id/LocationTextID2" />			
+					
+					
+					
+					
+				<!-- 	<TextView android:gravity="center" android:padding="3dip"
+						android:layout_centerHorizontal="true" 
+						android:layout_width="wrap_content" android:layout_height="wrap_content"
 						android:id="@+id/tommorrowId" />
-					<Button android:gravity="center"
-						android:background="@drawable/backward_right"
-						android:layout_alignParentLeft="true" android:paddingLeft="8dip"
-						android:textColor="#000" android:layout_width="48px"
-						android:layout_toRightOf="@id/tommorrowId" android:layout_height="48px"
-						android:id="@+id/previous" />
+						<Button android:gravity="center"
+						 android:paddingLeft="12dip"
+						android:textColor="#000" android:background="@drawable/backward"
+						android:layout_width="44px" android:layout_height="30px"
+						android:id="@+id/previous" android:layout_toLeftOf="@id/tommorrowId" />
+
+						
+					<TextView android:gravity="center" android:padding="3dip"
+						android:layout_centerHorizontal="true" android:textColor="#000"
+						android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/tommorrowId"
+						android:id="@+id/tommorrowTextID" /> -->
 				</RelativeLayout>
 
 				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -158,12 +206,7 @@
 				</TableLayout>
 
 			</LinearLayout>
-
 		</LinearLayout>
-
-
-
-
 
 	</com.farsitel.apps.athantime.views.PanelSwitcher>
 
