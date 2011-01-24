@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:id="@+id/settings" android:title="@string/calc_method_JAFARI"
-		android:alphabeticShortcut="@string/jafari_shortcut" />
-		
-	<item android:id="@+id/settings" android:title="@string/calc_method_ut"
-		android:alphabeticShortcut="@string/ut_shortcut" />
-</menu>

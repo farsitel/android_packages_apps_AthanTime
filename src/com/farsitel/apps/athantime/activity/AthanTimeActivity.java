@@ -1,8 +1,13 @@
 package com.farsitel.apps.athantime.activity;
 
+/*
+ * This is the main Activity for Athan application.
+ * 
+ *  Written by: Majid Kalkatehchi
+ *  Email: majid@farsitel.com
+ */
+
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,7 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.text.format.Jalali;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,21 +38,27 @@ import com.farsitel.apps.athantime.R;
 import com.farsitel.apps.athantime.data.AthanTime;
 import com.farsitel.apps.athantime.data.DayTime;
 import com.farsitel.apps.athantime.logic.AthanTimeCalculator;
-import com.farsitel.apps.athantime.util.ConstantUtil;
+import com.farsitel.apps.athantime.util.ConstantUtilInterface;
+import com.farsitel.apps.athantime.util.LocationEnum;
 import com.farsitel.apps.athantime.views.PanelSwitcher;
 
 public class AthanTimeActivity extends Activity implements LocationListener,
-        OnSharedPreferenceChangeListener, OnClickListener {
-    /** Called when the activity is first created. */
+        OnSharedPreferenceChangeListener, OnClickListener,
+        ConstantUtilInterface {
+    // Component that handles right and left
     PanelSwitcher panelSwitcher;
-    private static final int TODAY_PANEL = 1;
-    private static final int TOMORROW_PANEL = 2;
+
     public static final int DATE_CHANGED = 1;
+    public boolean isRegistered = false;
+
+    AthanTimeCalculator athanTime = null;
+    private Location previousLocation = null;
+    private int previousDate = -1;
+
     public Handler mHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
-            // TODO Auto-generated method stub
             switch (msg.what) {
             case DATE_CHANGED:
                 if (previousLocation != null) {
@@ -59,6 +70,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
 
     };
 
+    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +83,11 @@ public class AthanTimeActivity extends Activity implements LocationListener,
                 .getDefaultSharedPreferences(context);
         prefs.registerOnSharedPreferenceChangeListener(this);
         boolean isGPS = isGPSOn();
-        if (isGPS)
+        if (isGPS) {
             registerListener();
-        else
+            setTextOnGPSOn();
+
+        } else
             useDefaultLocation(prefs,
                     getString(R.string.state_location_pref_key));
         Button nextBtn = (Button) findViewById(R.id.nextBtn);
@@ -101,6 +115,61 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         timer.schedule(dateChecker, 0, 10 * 1000);
     }
 
+    private void setTextOnGPSOn() {
+        ((TextView) findViewById(R.id.fajrID)).setText("");
+        ((TextView) findViewById(R.id.sunriseID)).setText("");
+        ((TextView) findViewById(R.id.noonID)).setText("");
+        ((TextView) findViewById(R.id.nightID)).setText("");
+        ((TextView) findViewById(R.id.nightAthanID)).setText("");
+        ((TextView) findViewById(R.id.fajrID2)).setText("");
+        ((TextView) findViewById(R.id.sunriseID2)).setText("");
+        ((TextView) findViewById(R.id.noonID2)).setText("");
+        ((TextView) findViewById(R.id.nightID2)).setText("");
+        ((TextView) findViewById(R.id.nightAthanID2)).setText("");
+        ((TextView) findViewById(R.id.fajrStr)).setText("");
+        ((TextView) findViewById(R.id.sunriseStr)).setText("");
+        ((TextView) findViewById(R.id.noonStr)).setText("");
+        ((TextView) findViewById(R.id.nightStr)).setText("");
+        ((TextView) findViewById(R.id.nightAthanStr)).setText("");
+        ((TextView) findViewById(R.id.fajrStr2)).setText("");
+        ((TextView) findViewById(R.id.sunriseStr2)).setText("");
+        ((TextView) findViewById(R.id.noonStr2)).setText("");
+        ((TextView) findViewById(R.id.nightStr2)).setText("");
+        ((TextView) findViewById(R.id.nightAthanStr2)).setText("");
+        ((Button) findViewById(R.id.previous)).setVisibility(View.INVISIBLE);
+        ((Button) findViewById(R.id.nextBtn)).setVisibility(View.INVISIBLE);
+        ((TextView) findViewById(R.id.LocationTextID)).setText("");
+        ((TextView) findViewById(R.id.LocationTextID2)).setText("");
+        TextView todayID = (TextView) findViewById(R.id.todayID);
+        TextView todayTextID = (TextView) findViewById(R.id.todayTextID);
+        TextView tommorrowID = (TextView) findViewById(R.id.tommorrowId);
+        TextView tommorrowTextID = (TextView) findViewById(R.id.tommorrowTextID);
+        float dimension = getResources().getDimension(R.dimen.small_text_size);
+        todayID.setTextColor(getResources().getColor(R.color.red));
+        tommorrowID.setTextColor(getResources().getColor(R.color.red));
+        todayID.setTextSize(dimension);
+        todayTextID.setTextSize(dimension);
+        todayTextID.setPadding(todayTextID.getPaddingLeft(), 20,
+                todayTextID.getPaddingRight(), 20);
+        todayID.setPadding(todayID.getPaddingLeft(), 20,
+                todayID.getPaddingRight(), 20);
+        // tommorrowID.setTextSize(dimension);
+        tommorrowTextID.setPadding(tommorrowTextID.getPaddingLeft(), 20,
+                tommorrowTextID.getPaddingRight(), 20);
+        // tommorrowTextID.setTextSize(dimension);
+        tommorrowID.setPadding(tommorrowID.getPaddingLeft(), 20,
+                tommorrowID.getPaddingRight(), 20);
+
+        // String line1 = getString(R.string.no_location_line1);
+        String line1 = "";
+        String line2 = getString(R.string.no_location_yet);
+
+        todayID.setText(line1);
+        todayTextID.setText(line2);
+        tommorrowID.setText(line1);
+        tommorrowTextID.setText(line2);
+    }
+
     public boolean isGPSOn() {
         String gpsPerfKey = getString(R.string.gps_pref_key);
         SharedPreferences prefs = PreferenceManager
@@ -114,29 +183,46 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         return isGPS;
     }
 
-    public boolean isRegistered = false;
-
     private void registerListener() {
-        if (!isRegistered && isGPSOn()) {
-            ((LocationManager) getSystemService(Context.LOCATION_SERVICE))
-                    .requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                            ConstantUtil.MIN_LOCATION_TIME,
-                            ConstantUtil.MIN_LOCATION_DISTANCE, this);
+        if (isGPSOn()) {
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+            criteria.setPowerRequirement(Criteria.POWER_LOW);
+            criteria.setAltitudeRequired(false);
+            criteria.setBearingRequired(false);
+            criteria.setSpeedRequired(false);
+            criteria.setCostAllowed(true);
+            LocationManager locationManager = ((LocationManager) getSystemService(Context.LOCATION_SERVICE));
+            String provider = locationManager.getBestProvider(criteria, true);
+
+            locationManager.requestLocationUpdates(provider, MIN_LOCATION_TIME,
+                    MIN_LOCATION_DISTANCE, this);
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER, MIN_LOCATION_TIME,
+                    MIN_LOCATION_DISTANCE, this);
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, MIN_LOCATION_TIME,
+                    MIN_LOCATION_DISTANCE, this);
+            Location location = locationManager
+                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location == null) {
+                location = ((LocationManager) getSystemService(Context.LOCATION_SERVICE))
+                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
+            if (location != null) {
+                this.onLocationChanged(location);
+            }
+
             isRegistered = true;
         }
     }
 
     private void unregisterListener() {
-        if (isRegistered) {
-            ((LocationManager) getSystemService(Context.LOCATION_SERVICE))
-                    .removeUpdates(this);
-            isRegistered = false;
-        }
-    }
 
-    AthanTimeCalculator athanTime = null;
-    private Location previousLocation = null;
-    private int previousDate = -1;
+        ((LocationManager) getSystemService(Context.LOCATION_SERVICE))
+                .removeUpdates(this);
+
+    }
 
     private boolean isDateChanged(Calendar c) {
         if (previousDate != c.get(Calendar.DATE))
@@ -157,7 +243,9 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         TextView tomorrowSunset = (TextView) findViewById(R.id.nightID2);
         TextView tomorrowMaghrib = (TextView) findViewById(R.id.nightAthanID2);
         TextView todayText = (TextView) findViewById(R.id.todayID);
+        TextView todayDateText = (TextView) findViewById(R.id.todayTextID);
         TextView tomorrowText = (TextView) findViewById(R.id.tommorrowId);
+        TextView tomorrowDateText = (TextView) findViewById(R.id.tommorrowTextID);
         TextView todayFajrStr = (TextView) findViewById(R.id.fajrStr);
         TextView todaySunriseStr = (TextView) findViewById(R.id.sunriseStr);
         TextView todayDhuhrStr = (TextView) findViewById(R.id.noonStr);
@@ -168,8 +256,9 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         TextView tomorrowDhuhrStr = (TextView) findViewById(R.id.noonStr2);
         TextView tomorrowSunsetStr = (TextView) findViewById(R.id.nightStr2);
         TextView tomorrowMaghribStr = (TextView) findViewById(R.id.nightAthanStr2);
-
-        int paddingBottom = 25;
+        ((Button) findViewById(R.id.previous)).setVisibility(View.VISIBLE);
+        ((Button) findViewById(R.id.nextBtn)).setVisibility(View.VISIBLE);
+        int paddingBottom = 22;
         int paddingTop = 0;
         int paddingRight = 0;
         int paddingLeft = 0;
@@ -194,8 +283,10 @@ public class AthanTimeActivity extends Activity implements LocationListener,
                 paddingBottom);
         tomorrowMaghrib.setPadding(paddingLeft, paddingTop, paddingRight,
                 paddingBottom);
-        todayText.setPadding(paddingLeft, paddingTop, paddingRight, 10);
-        tomorrowText.setPadding(paddingLeft, paddingTop, paddingRight, 10);
+        todayText.setPadding(40, paddingTop, 40, 10);
+        todayDateText.setPadding(7, paddingTop, 7, 10);
+        tomorrowText.setPadding(40, paddingTop, 40, 10);
+        tomorrowDateText.setPadding(7, paddingTop, 7, 10);
         //
         todayFajr.setTextSize(getResources().getDimension(
                 R.dimen.about_text_size));
@@ -207,6 +298,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
                 R.dimen.about_text_size));
         todayMaghrib.setTextSize(getResources().getDimension(
                 R.dimen.about_text_size));
+        todayText.setTextColor(getResources().getColor(R.color.black));
         tomorrowFajr.setTextSize(getResources().getDimension(
                 R.dimen.about_text_size));
         tomorrowSunrise.setTextSize(getResources().getDimension(
@@ -220,6 +312,10 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         todayText.setTextSize(getResources().getDimension(
                 R.dimen.about_text_size));
         tomorrowText.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        todayDateText.setTextSize(getResources().getDimension(
+                R.dimen.about_text_size));
+        tomorrowDateText.setTextSize(getResources().getDimension(
                 R.dimen.about_text_size));
         //
         todayFajrStr.setTextSize(getResources().getDimension(
@@ -242,6 +338,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
                 R.dimen.about_text_size));
         tomorrowMaghribStr.setTextSize(getResources().getDimension(
                 R.dimen.about_text_size));
+        tomorrowText.setTextColor(getResources().getColor(R.color.black));
 
     }
 
@@ -260,37 +357,55 @@ public class AthanTimeActivity extends Activity implements LocationListener,
                 previousLocation = location;
             }
 
-            athanTime.setCalcMethod(athanTime.Jafari);
-            athanTime.setAsrJuristic(athanTime.Shafii);
-            athanTime.setAdjustHighLats(athanTime.AngleBased);
+            athanTime.setCalcMethod(AthanTimeCalculator.Jafari);
+            athanTime.setAsrJuristic(AthanTimeCalculator.Shafii);
+            athanTime.setAdjustHighLats(AthanTimeCalculator.AngleBased);
             int[] offsets = { 0, 0, 0, 0, 0, 0, 0 }; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
             athanTime.tune(offsets);
             AthanTime prayerTimes = athanTime.getPrayerTimes(c,
                     location.getLatitude(), location.getLongitude(),
                     athanTime.getBaseTimeZone());
             c.add(Calendar.DATE, 1);
-            todayAthanTime = prayerTimes;
+            // todayAthanTime = prayerTimes;
             AthanTime tommorowPrayerTime = athanTime.getPrayerTimes(c,
                     location.getLatitude(), location.getLongitude(),
                     athanTime.getBaseTimeZone());
-            tomorrowAthanTime = tommorowPrayerTime;
+            // tomorrowAthanTime = tommorowPrayerTime;
             setAthanTimeText(prayerTimes, tommorowPrayerTime);
         }
 
     }
 
-    private AthanTime todayAthanTime;
-    private AthanTime tomorrowAthanTime;
-
     private void setAthanTimeText(AthanTime todayPrayerTimes,
             AthanTime tommorowPrayerTimes) {
+        uiSetup();
+
+        ((TextView) findViewById(R.id.fajrStr))
+                .setText(getString(R.string.fajr));
+        ((TextView) findViewById(R.id.sunriseStr))
+                .setText(getString(R.string.sunrise));
+        ((TextView) findViewById(R.id.noonStr))
+                .setText(getString(R.string.noon));
+        ((TextView) findViewById(R.id.nightStr))
+                .setText(getString(R.string.night));
+        ((TextView) findViewById(R.id.nightAthanStr))
+                .setText(getString(R.string.nightAthan));
+        ((TextView) findViewById(R.id.fajrStr2))
+                .setText(getString(R.string.fajr));
+        ((TextView) findViewById(R.id.sunriseStr2))
+                .setText(getString(R.string.sunrise));
+        ((TextView) findViewById(R.id.noonStr2))
+                .setText(getString(R.string.noon));
+        ((TextView) findViewById(R.id.nightStr2))
+                .setText(getString(R.string.night));
+        ((TextView) findViewById(R.id.nightAthanStr2))
+                .setText(getString(R.string.nightAthan));
+
         TextView fajr;
         TextView sunrise;
         TextView duhr;
         TextView sunset;
         TextView maghrib;
-        TextView latitude;
-        TextView longitude;
         TextView datePrefixText;
         TextView dateText;
         Calendar c = Calendar.getInstance();
@@ -303,10 +418,10 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         sunset = (TextView) findViewById(R.id.nightID);
         maghrib = (TextView) findViewById(R.id.nightAthanID);
         datePrefixText = (TextView) findViewById(R.id.todayID);
+        dateText = (TextView) findViewById(R.id.todayTextID);
+
+        dateText.setText(getFormattedDate(c));
         datePrefixText.setText(getString(R.string.today));
-        // datePrefixText.setText(String.format(getString(R.string.today)
-        // +" %Ld " +Jalali.getLongMonthName(c.get(Calendar.MONTH)) +
-        // " ماه %Ld",c.get(Calendar.DATE),c.get(Calendar.YEAR)));
         fajr.setText(getTimeForPrint(todayPrayerTimes.getFajr()));
         sunrise.setText(getTimeForPrint(todayPrayerTimes.getSunrise()));
         duhr.setText(getTimeForPrint(todayPrayerTimes.getDhuhr()));
@@ -320,22 +435,15 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         sunset = (TextView) findViewById(R.id.nightID2);
         maghrib = (TextView) findViewById(R.id.nightAthanID2);
         datePrefixText = (TextView) findViewById(R.id.tommorrowId);
-        // datePrefixText = (TextView) findViewById(R.id.to);
-        // latitude = (TextView) findViewById(R.id.latitudeID2);
-        // longitude = (TextView) findViewById(R.id.longitudeID2);
+        dateText = (TextView) findViewById(R.id.tommorrowTextID);
 
+        dateText.setText(getFormattedDate(c));
         datePrefixText.setText(getString(R.string.tomorrow));
         fajr.setText(getTimeForPrint(tommorowPrayerTimes.getFajr()));
         sunrise.setText(getTimeForPrint(tommorowPrayerTimes.getSunrise()));
         duhr.setText(getTimeForPrint(tommorowPrayerTimes.getDhuhr()));
         sunset.setText(getTimeForPrint(tommorowPrayerTimes.getSunset()));
         maghrib.setText(getTimeForPrint(tommorowPrayerTimes.getMaghrib()));
-        // fajr.setTypeface(Typeface.DEFAULT_BOLD);
-        // sunrise.setTypeface(Typeface.DEFAULT_BOLD);
-        // duhr.setTypeface(Typeface.DEFAULT_BOLD);
-        // sunset.setTypeface(Typeface.DEFAULT_BOLD);
-        // maghrib.setTypeface(Typeface.DEFAULT_BOLD);
-
     }
 
     // @Override
@@ -350,81 +458,34 @@ public class AthanTimeActivity extends Activity implements LocationListener,
 
     }
 
-    //
-
     private String getFormattedDate(Calendar c) {
-        // int year = c.get(Calendar.YEAR);int month = c.get(Calendar.MONTH);
-        // int date = c.get(Calendar.DATE);
-        //
-        // JalaliDate jDate = Jalali.gregorianToJalali(year, month, date);
-        // String monthName = Jalali.getLongMonthName(jDate.month);
-        // date= jDate.day;
-        // year = jDate.year;
-        // int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        // String dayOfWeekStr = "";
-        // switch(dayOfWeek){
-        // case 0:
-        // break;
-        // case 1:
-        // break;
-        // case 2:
-        // break;
-        // case 3:
-        // break;
-        // case 4:
-        // break;
-        // case 5:
-        // break;
-        // case 6:
-        // break;
-        //
-        //
-        // }
-        // int postKey =R.string.forth_above;;
-        // switch (date){
-        // case 1:
-        // postKey=R.string.first;
-        // break;
-        // case 2:
-        // postKey = R.string.second;
-        // break;
-        // case 3:
-        // postKey = R.string.third;
-        // break;
-        // }
-        // String formatString = android.text.format.DateFormat
-        // .getDateFormatStringForSetting(this,"dd MMMM yyyy");
         return ""
                 + android.text.format.DateFormat.format("d MMM yyy",
-                        c.getTimeInMillis(), this);
-        // return String.format("%s %Ld%s %s %Ld",dayOfWeekStr,
-        // date,getString(postKey),monthName,year);
+                        c.getTimeInMillis());
     }
 
     private String getTimeForPrint(DayTime dayTime) {
         int hour = dayTime.getHour();
         int minute = dayTime.getMinute();
-        String hourStr = "" + hour;
-        String minuteStr = "" + minute;
-        return String.format("%L02d:%L02d", hour, minute);
+        return String.format("%02d:%02d", hour, minute);
 
     }
 
-    private String getLocationForPrint(double value, boolean isLatitude) {
-        int degree = (new Double(Math.floor(value))).intValue();
-        String end = getString(((isLatitude) ? R.string.latitude_south
-                : R.string.longitude_west));
-        if (degree > 0) {
-            end = getString(((isLatitude) ? R.string.latitude_north
-                    : R.string.longitude_east));
-        }
-        double second = (value - degree) * 100;
-        double minDouble = (second * 3d / 5d);
-        int minute = new Double(Math.floor(minDouble)).intValue();
-        return Jalali.persianDigits(degree + "") + "" + '\u00B0' + " "
-                + Jalali.persianDigits("" + minute) + "" + '\u00B4' + "" + end;
-
-    }
+    // private String getLocationForPrint(double value, boolean isLatitude) {
+    // int degree = (new Double(Math.floor(value))).intValue();
+    // String end = getString(((isLatitude) ? R.string.latitude_south
+    // : R.string.longitude_west));
+    // if (degree > 0) {
+    // end = getString(((isLatitude) ? R.string.latitude_north
+    // : R.string.longitude_east));
+    // }
+    // double second = (value - degree) * 100;
+    // double minDouble = (second * 3d / 5d);
+    // int minute = new Double(Math.floor(minDouble)).intValue();
+    // return Jalali.persianDigits(degree + "") + "" + '\u00B0' + " "
+    // + Jalali.persianDigits("" + minute) + "" + '\u00B4' + "" + end;
+    //
+    // }
 
     @Override
     public void onResume() {
@@ -432,14 +493,18 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         registerListener();
     }
 
+    /*
+     * checking is the new location worth the computation of athan Time
+     */
     private boolean isFarEnough(Location newLocation, Location previousLocation) {
-        double newLatitude = newLocation.getLatitude();
-        double newLongitude = newLocation.getLongitude();
-        double prevLatitude = previousLocation.getLatitude();
-        double prevLongitude = previousLocation.getLongitude();
         return true;
     }
 
+    /*
+     * This method sets the default configuration values for the athan time
+     * calculation. (Currently we set the calculation to Shia Ithna ashari
+     * method)
+     */
     private AthanTimeCalculator prepareAthanCalculator(
             AthanTimeCalculator athanTime) {
         athanTime.setCalcMethod(AthanTimeCalculator.ISNA);
@@ -448,72 +513,28 @@ public class AthanTimeActivity extends Activity implements LocationListener,
 
     @Override
     public void onProviderDisabled(String provider) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO Auto-generated method stub
     }
-
-    public static final int MENU_ARAK = 1;
-    public static final int MENU_ARDABIL = 2;
-    public static final int MENU_ORUMIYEH = 3;
-    public static final int MENU_ESFEHAN = 4;
-    public static final int MENU_AHVAZ = 5;
-    public static final int MENU_ILAM = 6;
-    public static final int MENU_BOJNURD = 7;
-    public static final int MENU_BANDAR_ABAS = 8;
-    public static final int MENU_BUSHEHR = 9;
-    public static final int MENU_BIRJAND = 10;
-    public static final int MENU_TABRIZ = 11;
-    public static final int MENU_TEHRAN = 12;
-    public static final int MENU_KHORAM_ABAD = 13;
-    public static final int MENU_RASHT = 14;
-    public static final int MENU_ZAHEDAN = 15;
-    public static final int MENU_ZANJAN = 16;
-    public static final int MENU_SARI = 17;
-    public static final int MENU_SEMNAN = 18;
-    public static final int MENU_SANANDAJ = 19;
-    public static final int MENU_SHAHREKORD = 20;
-    public static final int MENU_SHIRAZ = 21;
-    public static final int MENU_GHAZVIN = 22;
-    public static final int MENU_GHOM = 23;
-    public static final int MENU_KARAJ = 24;
-    public static final int MENU_KERMAN = 25;
-    public static final int MENU_KERMANSHAH = 26;
-    public static final int MENU_GORGAN = 27;
-    public static final int MENU_MASHHAD = 28;
-    public static final int MENU_HAMEDAN = 29;
-    public static final int MENU_YASUJ = 30;
-    public static final int MENU_YAZD = 31;
-    public static final Map<Integer, Integer> STATE_VALUE_KEY = new HashMap<Integer, Integer>();
-    public static final int MENU_HELP = 35;
-    public static final int MENU_PREFS = 34;
-    public static final int MENU_ABOUT = 33;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         int aboutGroupID = 0;
-        int helpGroupID = 1;
         int prefsGroupID = 2;
         int aboutItemOrder = 3;
-        int helpItemOrder = 2;
+        // int helpItemOrder = 2;
         int prefsItemOrder = Menu.FIRST;
-
         MenuItem prefsMenuItem = menu.add(prefsGroupID, MENU_PREFS,
                 prefsItemOrder, R.string.prefs_menu_title);
         prefsMenuItem.setIcon(R.drawable.settings);
-        // MenuItem helpMenuItem = menu.add(helpGroupID, MENU_HELP,
-        // helpItemOrder,
-        // R.string.help_menu_title);
-        // helpMenuItem.setIcon(R.drawable.help);
+
         MenuItem aboutMenuItem = menu.add(aboutGroupID, MENU_ABOUT,
                 aboutItemOrder, R.string.about_menu_title);
         aboutMenuItem.setIcon(R.drawable.about);
@@ -540,15 +561,11 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         default:
             return false;
         }
-        // return false;
     }
-
-    public static final String ATHAN_TIME_LOG = "Oghat shari";
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
             String key) {
-        // TODO Auto-generated method stub
         String gpsPerfKey = getString(R.string.gps_pref_key);
         String defaultLocationPerfKey = getString(R.string.state_location_pref_key);
         if (gpsPerfKey.equals(key)) {
@@ -561,6 +578,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
             }
             if (isGPS) {
                 registerListener();
+                setTextOnGPSOn();
             } else {
                 unregisterListener();
                 useDefaultLocation(sharedPreferences, defaultLocationPerfKey);
@@ -570,7 +588,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
             sharedPreferences.edit().commit();
             useDefaultLocation(sharedPreferences, key);
         } else {
-            Log.w(ATHAN_TIME_LOG, "preference with key:" + key
+            Log.w(NAMAZ_LOG_TAG, "preference with key:" + key
                     + " is changed and it is not handled properly");
         }
 
@@ -578,156 +596,31 @@ public class AthanTimeActivity extends Activity implements LocationListener,
 
     private void useDefaultLocation(SharedPreferences perfs, String key) {
         int defLocationID = Integer.parseInt(perfs.getString(key, ""
-                + MENU_TEHRAN));
-        // Log.w(ATHAN_TIME_LOG,"Guz: " + defLocationID.getClass().getName());
-        Location location = getLocationByID(defLocationID);
+                + LocationEnum.MENU_TEHRAN.getId()));
+        LocationEnum locationEnum = LocationEnum.values()[defLocationID - 1];
+        Log.d("shari", locationEnum + " enum");
+        Location location = locationEnum.getLocation();
+        Log.i("Ahan Time", "who is null: " + findViewById(R.id.LocationTextID2)
+                + " * " + getString(R.string.be_ofogh) + " * " + locationEnum);
+        ((TextView) findViewById(R.id.LocationTextID)).setText(String.format(
+                getString(R.string.be_ofogh), locationEnum.getName(this)));
+        ((TextView) findViewById(R.id.LocationTextID2)).setText(String.format(
+                getString(R.string.be_ofogh), locationEnum.getName(this)));
         onLocationChanged(location);
-    }
-
-    private Location getLocationByID(int locationID) {
-        Location returnLocation = new Location("GPS");
-        switch (locationID) {
-        case MENU_TABRIZ:
-            returnLocation.setLatitude(38.08d);
-            returnLocation.setLongitude(46.3);
-
-            break;
-        case MENU_ORUMIYEH:
-            returnLocation.setLatitude(37.53);
-            returnLocation.setLongitude(45);
-            break;
-        case MENU_ARDABIL:
-            returnLocation.setLatitude(38.25);
-            returnLocation.setLongitude(48.28);
-            break;
-        case MENU_ESFEHAN:
-            returnLocation.setLatitude(32.65);
-            returnLocation.setLongitude(51.67);
-            break;
-        case MENU_KARAJ:
-            returnLocation.setLatitude(35.82);
-            returnLocation.setLongitude(50.97);
-            break;
-        case MENU_ILAM:
-            returnLocation.setLatitude(33.63);
-            returnLocation.setLongitude(46.42);
-            break;
-        case MENU_BUSHEHR:
-            returnLocation.setLatitude(28.96);
-            returnLocation.setLongitude(50.84);
-            break;
-        default:
-        case MENU_TEHRAN:
-            returnLocation.setLatitude(35.68);
-            returnLocation.setLongitude(51.42);
-            break;
-        case MENU_SHAHREKORD:
-            returnLocation.setLatitude(32.32);
-            returnLocation.setLongitude(50.85);
-            break;
-        case MENU_BIRJAND:
-            returnLocation.setLatitude(32.88);
-            returnLocation.setLongitude(59.22);
-            break;
-        case MENU_MASHHAD:
-            returnLocation.setLatitude(34.3);
-            returnLocation.setLongitude(59.57);
-            break;
-        case MENU_BOJNURD:
-            returnLocation.setLatitude(37.47);
-            returnLocation.setLongitude(57.33);
-            break;
-        case MENU_AHVAZ:
-            returnLocation.setLatitude(31.52);
-            returnLocation.setLongitude(48.68);
-            break;
-        case MENU_ZANJAN:
-            returnLocation.setLatitude(36.67);
-            returnLocation.setLongitude(48.48);
-            break;
-        case MENU_SEMNAN:
-            returnLocation.setLatitude(35.57);
-            returnLocation.setLongitude(53.38);
-            break;
-        case MENU_ZAHEDAN:
-            returnLocation.setLatitude(29.5);
-            returnLocation.setLongitude(60.85);
-            break;
-        case MENU_SHIRAZ:
-            returnLocation.setLatitude(29.62);
-            returnLocation.setLongitude(52.53);
-            break;
-        case MENU_GHAZVIN:
-            returnLocation.setLatitude(36.45);
-            returnLocation.setLongitude(50);
-            break;
-        case MENU_GHOM:
-            returnLocation.setLatitude(34.65);
-            returnLocation.setLongitude(50.95);
-            break;
-        case MENU_SANANDAJ:
-            returnLocation.setLatitude(35.3);
-            returnLocation.setLongitude(47.02);
-            break;
-        case MENU_KERMAN:
-            returnLocation.setLatitude(30.28);
-            returnLocation.setLongitude(57.06);
-            break;
-        case MENU_KERMANSHAH:
-            returnLocation.setLatitude(34.32);
-            returnLocation.setLongitude(47.06);
-            break;
-        case MENU_YASUJ:
-            returnLocation.setLatitude(30.82);
-            returnLocation.setLongitude(51.68);
-            break;
-        case MENU_GORGAN:
-            returnLocation.setLatitude(36.83);
-            returnLocation.setLongitude(54.48);
-            break;
-        case MENU_RASHT:
-            returnLocation.setLatitude(37.3);
-            returnLocation.setLongitude(49.63);
-            break;
-        case MENU_KHORAM_ABAD:
-            returnLocation.setLatitude(33.48);
-            returnLocation.setLongitude(48.35);
-            break;
-        case MENU_SARI:
-            returnLocation.setLatitude(36.55);
-            returnLocation.setLongitude(53.1);
-            break;
-        case MENU_ARAK:
-            returnLocation.setLatitude(34.08);
-            returnLocation.setLongitude(49.7);
-            break;
-        case MENU_BANDAR_ABAS:
-            returnLocation.setLatitude(27.18);
-            returnLocation.setLongitude(56.27);
-            break;
-        case MENU_HAMEDAN:
-            returnLocation.setLatitude(34.77);
-            returnLocation.setLongitude(48.58);
-            break;
-        case MENU_YAZD:
-            returnLocation.setLatitude(31.90);
-            returnLocation.setLongitude(54.37);
-            break;
-
-        }
-        return returnLocation;
     }
 
     @Override
     protected void onPause() {
-        // TODO Auto-generated method stub
         unregisterListener();
         super.onPause();
     }
 
+    /*
+     * We are Overriding this method to catch touch on the screen and trigger
+     * the panelSwitch mechanism.
+     */
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         int id = v.getId();
         PanelSwitcher panel = (PanelSwitcher) findViewById(R.id.panelswitch);
         switch (id) {

@@ -1,45 +1,45 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">Athan Time</string>
-	<string name="athan">Athan Time</string>
-	<string name="dailyActivity">Daily Activity</string>
-	<string name="zekr_shortcut">z</string>
-	<string name="fajr">Fijr </string>
+
+	<string name="fajr">Fijr</string>
 	<string name="sunrise">Sunrise</string>
 	<string name="noon">Dhuhr</string>
 	<string name="asr">Asr</string>
 	<string name="night">Sunset</string>
 	<string name="nightAthan">Maghrib</string>
 	<string name="midnight">Midnight</string>
-	<string name="calc_method_JAFARI">Compute based on The Twelvers\' method</string>
-	<string name="calc_method_ut">Compute based on the method of University of Tehran</string>
-	<string name="jafari_shortcut">j</string>
-	<string name="ut_shortcut">t</string>
-	<string name="gps_prompt">GPS</string>
-	<string name="gps_summary">Use GPS to locate your mobile device</string>
-	<string name="state_location_title">set Location Manually</string>
-	<string name="state_location_summary">Set your location to one of Iran\'s state (Battery saving)</string>
-	<string name="gps_pref_key">GPS_LOCATION_PREF</string>
-	<string name="release_date">December 10, 2010\n</string>
-	<string name="version">Version 1.0</string>
-	<string name="state_location_pref_key">state_LOCATION_PREF</string>
-	<string name="preference_title">Athan Time Preferences</string>
+
+	<string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="be_ofogh">In %s</string>
+
+	<string name="no_location_yet">Please wait. Detecting your location...\nOr you can select your city in the Settings.</string>
+
+    <string name="gps_prompt">Use GPS</string>
+	<string name="gps_summary">Enables using GPS for getting your location.</string>
+
+	<string name="state_location_title">Set your location manually.</string>
+	<string name="state_location_summary">Select one of province capitals of Iran if you are near them.</string>
+
 	<string name="about_menu_title">About</string>
-	<string name="help_menu_title">Help</string>
-	<string name="prefs_menu_title">Preferences</string>
+	<string name="prefs_menu_title">Settings</string>
+
+    <!-- Do not translate next two message, it is used for other reasons-->
+	<string name="gps_pref_key">GPS_LOCATION_PREF</string>
+    <string name="state_location_pref_key">state_LOCATION_PREF</string>
+
+	<string name="release_date">December 27, 2010\n</string>
+	<string name="version">Version 1.1</string>
 	<string name="about_title_text">About Athan Time Application</string>
-		
-<string name="about_text">\nAthan times show the times to say prayers for Muslims. <font fgcolor="#ffffffff"><b>Athan Time</b></font> gives you these times according to your physical location.\n\nAll rights reserved by <font fgcolor="#ffffffff"><b>Iranian Congenial Mobile Co.</b></font>. The computation of these times is based on the algorithm provided in the website <font fgcolor="#ffffffff"><b>Tanzil</b></font>, available for public use.\n\nVisit <font fgcolor="#ff749c00"><a href="http://farsitel.com/fa/" fgcolor="749C00FF">http://farsitel.com/</a></font> to learn more about <font fgcolor="#ffffffff"><b>FarsiTel</b></font>.\n\n</string>
 
-<string name="latitude_north">N</string>
-<string name="latitude_south">S</string>
-<string name="longitude_east">E</string>
-<string name="longitude_west">W</string>
-<string name="first">st</string>
-<string name="second">nd</string>
-<string name="third">rd</string>
-<string name="forth_above">th</string>
-<string name="tomorrow">Tomorrow</string>
-<string name="today">Today</string>
-
+    <string name="about_text">\n
+	Athan times show the times to say prayers for Muslims. <font fgcolor="#ffffffff"><b>Athan Time</b></font> gives you these times according to your physical location.
+	\n\n
+    All rights reserved by <font fgcolor="#ffffffff"><b>Iranian Congenial Mobile Co.</b></font>. The computation of these times is based on the algorithm provided in the website <font fgcolor="#ffffffff"><b>Tanzil</b></font>, available for public use.
+    \n\n
+    Visit <font fgcolor="#ff749c00"><a href="http://farsitel.com/fa/" fgcolor="749C00FF">http://farsitel.com/</a></font> to learn more about 
+   <font fgcolor="#ffffffff"><b>FarsiTel</b></font>.
+   \n\n
+   </string>
 </resources>
