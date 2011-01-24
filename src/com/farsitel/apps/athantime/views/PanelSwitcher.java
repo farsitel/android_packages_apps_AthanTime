@@ -46,7 +46,7 @@ public class PanelSwitcher extends FrameLayout {
     private int mPreviousMove;
 
     public boolean isRTL() {
-        return false;
+        return mRTL;
     }
 
     public PanelSwitcher(Context context, AttributeSet attrs) {

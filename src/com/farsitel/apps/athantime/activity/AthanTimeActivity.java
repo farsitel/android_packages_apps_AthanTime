@@ -467,7 +467,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
     private String getTimeForPrint(DayTime dayTime) {
         int hour = dayTime.getHour();
         int minute = dayTime.getMinute();
-        return String.format("%02d:%02d", hour, minute);
+        return String.format("%L02d:%L02d", hour, minute);
 
     }
 
