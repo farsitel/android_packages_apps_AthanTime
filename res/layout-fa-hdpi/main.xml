@@ -5,7 +5,7 @@
 	android:id="@+id/layout" android:paddingTop="200px"
 	android:paddingLeft="80px" android:paddingRight="80px"
 	android:paddingBottom="80px">
-	<com.farsitel.apps.athantime.views.PanelSwitcher
+	<com.farsitel.athantime.views.PanelSwitcher
 		android:id="@+id/panelswitch" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:layout_weight="4">
 		<LinearLayout android:id="@+id/tabcontent"
@@ -208,7 +208,7 @@
 			</LinearLayout>
 		</LinearLayout>
 
-	</com.farsitel.apps.athantime.views.PanelSwitcher>
+	</com.farsitel.athantime.views.PanelSwitcher>
 
 
 </LinearLayout>

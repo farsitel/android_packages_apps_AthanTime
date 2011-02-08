@@ -1,4 +1,4 @@
-package com.farsitel.apps.athantime.logic;
+package com.farsitel.athantime.logic;
 
 
 import java.util.HashMap;

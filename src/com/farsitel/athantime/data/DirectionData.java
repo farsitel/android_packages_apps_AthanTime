@@ -1,4 +1,4 @@
-package com.farsitel.apps.athantime.data;
+package com.farsitel.athantime.data;
 
 public class DirectionData {
     private double northDirectionFromDeviceHead;

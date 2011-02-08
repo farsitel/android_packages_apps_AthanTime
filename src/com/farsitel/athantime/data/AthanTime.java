@@ -1,4 +1,4 @@
-package com.farsitel.apps.athantime.data;
+package com.farsitel.athantime.data;
 
 import java.util.Date;
 
