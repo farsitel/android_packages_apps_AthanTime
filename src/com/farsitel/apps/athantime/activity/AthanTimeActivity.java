@@ -461,7 +461,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
     private String getFormattedDate(Calendar c) {
         return ""
                 + android.text.format.DateFormat.format("d MMM yyy",
-                        c.getTimeInMillis());
+                        c.getTimeInMillis(), this);
     }
 
     private String getTimeForPrint(DayTime dayTime) {
@@ -598,10 +598,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         int defLocationID = Integer.parseInt(perfs.getString(key, ""
                 + LocationEnum.MENU_TEHRAN.getId()));
         LocationEnum locationEnum = LocationEnum.values()[defLocationID - 1];
-        Log.d("shari", locationEnum + " enum");
         Location location = locationEnum.getLocation();
-        Log.i("Ahan Time", "who is null: " + findViewById(R.id.LocationTextID2)
-                + " * " + getString(R.string.be_ofogh) + " * " + locationEnum);
         ((TextView) findViewById(R.id.LocationTextID)).setText(String.format(
                 getString(R.string.be_ofogh), locationEnum.getName(this)));
         ((TextView) findViewById(R.id.LocationTextID2)).setText(String.format(
