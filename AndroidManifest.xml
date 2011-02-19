@@ -20,7 +20,9 @@
         <activity android:name=".activity.AboutActivity"
                   android:label="@string/about_menu_title" />
     </application>
+ 
     <uses-sdk android:minSdkVersion="4" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest> 
