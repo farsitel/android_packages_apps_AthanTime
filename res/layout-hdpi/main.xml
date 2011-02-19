@@ -14,11 +14,6 @@
 				android:layout_height="fill_parent" android:orientation="vertical">
 				<RelativeLayout android:layout_width="fill_parent"
 					android:layout_height="wrap_content">
-						<Button
-							android:textColor="#000" android:background="@drawable/backward"
-							android:layout_width="77px" android:layout_height="53px"
-							android:layout_marginLeft="220px"
-							android:id="@+id/nextBtn" />
 					<TextView android:gravity="center" android:padding="3dip"
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -31,13 +26,7 @@
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
 						android:layout_below="@+id/todayTextID" android:id="@+id/LocationTextID" />
-						
-						
 				</RelativeLayout>
-
-
-
-
 				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 					android:layout_width="fill_parent" android:layout_height="wrap_content"
 					android:id="@+id/athanLayout1" android:stretchColumns="*"
@@ -80,28 +69,30 @@
 						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/nightAthanID" />
 					</TableRow>
-
 					<!-- <TableRow> <TextView android:text="@string/midnight" android:padding="3dip" 
 						/> <TextView android:gravity="right" android:padding="3dip" android:id="@+id/midnightID" 
 						/> </TableRow> -->
 				</TableLayout>
-
-
+				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:paddingTop="5px"
+					android:paddingLeft="145px">
+					<TableRow>
+						<Button
+							android:background="@drawable/arrow_forward"
+							android:gravity="center"
+							android:id="@+id/nextBtn"
+						/>
+					</TableRow>
+				</TableLayout>
 			</LinearLayout>
 		</LinearLayout>
-
 		<LinearLayout android:id="@+id/tabcontent2"
 			android:layout_width="fill_parent" android:layout_height="fill_parent">
-
 			<LinearLayout android:layout_width="fill_parent"
 				android:layout_height="fill_parent" android:orientation="vertical">
 				<RelativeLayout android:layout_width="fill_parent"
 					android:layout_height="wrap_content">
-						<Button
-						android:layout_marginLeft="15px"
-						android:textColor="#000" android:background="@drawable/forward"
-						android:layout_width="77px" android:layout_height="53px" 
-						android:id="@+id/previous" />
 					<TextView android:gravity="center" android:padding="3dip"
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -115,74 +106,64 @@
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
 						android:layout_below="@id/tommorrowTextID" android:id="@+id/LocationTextID2" />				
 				</RelativeLayout>
-
 				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 					android:layout_width="fill_parent" android:layout_height="wrap_content"
 					android:paddingLeft="20px" android:paddingRight="20px" android:id="@+id/athanLayout2"
 					android:stretchColumns="*">
-
 					<!-- <TableRow> <TextView android:text="@string/latitude" android:padding="3dip" 
 						android:textColor="#000" /> <TextView android:padding="3dip" android:id="@+id/latitudeID2" 
 						android:textColor="#000" /> </TableRow> <TableRow> <TextView android:text="@string/longitude" 
 						android:padding="3dip" android:textColor="#000" /> <TextView android:padding="3dip" 
 						android:textColor="#000" android:id="@+id/longitudeID2" /> </TableRow> -->
-
 					<TableRow>
-
 						<TextView android:text="@string/fajr" android:padding="3dip"
 							android:id="@+id/fajrStr2" android:textColor="#000" />
 						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/fajrID2" />
-
 					</TableRow>
 					<TableRow>
-
 						<TextView android:text="@string/sunrise" android:padding="3dip"
 							android:id="@+id/sunriseStr2" android:textColor="#000" />
 						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/sunriseID2" />
-
 					</TableRow>
 					<TableRow>
-
 						<TextView android:text="@string/noon" android:padding="3dip"
 							android:id="@+id/noonStr2" android:textColor="#000" />
 						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/noonID2" />
-
 					</TableRow>
 					<!-- <TableRow> <TextView android:text="@string/asr" android:padding="3dip" 
 						/> <TextView android:gravity="right" android:padding="3dip" android:id="@+id/eveningAthanID" 
 						/> </TableRow> -->
 					<TableRow>
-
 						<TextView android:text="@string/night" android:padding="3dip"
 							android:id="@+id/nightStr2" android:textColor="#000" />
 						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/nightID2" />
-
 					</TableRow>
 					<TableRow>
 						<TextView android:text="@string/nightAthan" android:id="@+id/nightAthanStr2"
 							android:textColor="#000" android:padding="3dip" />
 						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/nightAthanID2" />
-
 					</TableRow>
 					<!-- <TableRow> <TextView android:text="@string/midnight" android:padding="3dip" 
 						/> <TextView android:gravity="right" android:padding="3dip" android:id="@+id/midnightID" 
 						/> </TableRow> -->
 				</TableLayout>
-
+				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:paddingTop="10px"
+					android:paddingLeft="145px">
+					<TableRow>
+						<Button
+						android:background="@drawable/arrow_backward"
+						android:id="@+id/previous"
+						/>
+					</TableRow>
+				</TableLayout>
 			</LinearLayout>
-
 		</LinearLayout>
-
-
-
-
-
 	</com.farsitel.athantime.views.PanelSwitcher>
-
-
 </LinearLayout>

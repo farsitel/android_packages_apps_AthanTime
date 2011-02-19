@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:background="@drawable/background"
-	android:id="@+id/layout" android:paddingTop="200px"
+	android:id="@+id/layout" android:paddingTop="230px"
 	android:paddingLeft="80px" android:paddingRight="80px"
 	android:paddingBottom="80px">
 	<com.farsitel.athantime.views.PanelSwitcher
@@ -13,41 +13,20 @@
 			<LinearLayout android:layout_width="fill_parent"
 				android:layout_height="fill_parent" android:orientation="vertical">
 				<RelativeLayout android:layout_width="fill_parent"
-					android:layout_height="wrap_content" android:paddingBottom="30px">
-					<Button
-							android:textColor="#000" android:background="@drawable/forward"
-							android:layout_width="77px" android:layout_height="53px"
-							android:layout_marginLeft="220px"
-							android:id="@+id/nextBtn" />
-					<TextView android:gravity="center" 
+					android:layout_height="wrap_content">
+					<TextView android:gravity="center" android:padding="3dip"
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
 						android:id="@+id/todayID" />
-					<TextView android:gravity="center" 
+					<TextView android:gravity="center" android:padding="3dip"
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
 						android:layout_below="@id/todayID" android:id="@+id/todayTextID" android:visibility="gone" />
-					<TextView android:gravity="center" 
-						android:layout_centerHorizontal="true" android:textColor="#000"
-						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:layout_below="@id/todayTextID" android:id="@+id/LocationTextID" />
-					
-					
-					
-					<!-- <TextView android:gravity="center" android:padding="3dip"
-						android:layout_centerHorizontal="true"
-						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:id="@+id/todayID" />
-					
 					<TextView android:gravity="center" android:padding="3dip"
 						android:layout_centerHorizontal="true" android:textColor="#000"
-						android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/todayID"
-						android:id="@+id/todayTextID" /> -->
+						android:layout_width="wrap_content" android:layout_height="wrap_content"
+						android:layout_below="@+id/todayTextID" android:id="@+id/LocationTextID" />
 				</RelativeLayout>
-
-
-
-
 				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 					android:layout_width="fill_parent" android:layout_height="wrap_content"
 					android:id="@+id/athanLayout1" android:stretchColumns="*"
@@ -60,19 +39,19 @@
 					<TableRow>
 						<TextView android:text="@string/fajr" android:padding="3dip"
 							android:id="@+id/fajrStr" android:textColor="#000" />
-						<TextView android:gravity="left" android:padding="3dip"
+						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/fajrID" />
 					</TableRow>
 					<TableRow>
 						<TextView android:text="@string/sunrise" android:padding="3dip"
 							android:id="@+id/sunriseStr" android:textColor="#000" />
-						<TextView android:gravity="left" android:padding="3dip"
+						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/sunriseID" />
 					</TableRow>
 					<TableRow>
 						<TextView android:text="@string/noon" android:padding="3dip"
 							android:id="@+id/noonStr" android:textColor="#000" />
-						<TextView android:gravity="left" android:padding="3dip"
+						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/noonID" />
 					</TableRow>
 					<!-- <TableRow> <TextView android:text="@string/asr" android:padding="3dip" 
@@ -81,39 +60,39 @@
 					<TableRow>
 						<TextView android:text="@string/night" android:padding="3dip"
 							android:id="@+id/nightStr" android:textColor="#000" />
-						<TextView android:gravity="left" android:padding="3dip"
+						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/nightID" />
 					</TableRow>
 					<TableRow>
 						<TextView android:text="@string/nightAthan" android:id="@+id/nightAthanStr"
 							android:textColor="#000" android:padding="3dip" />
-						<TextView android:gravity="left" android:padding="3dip"
+						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/nightAthanID" />
 					</TableRow>
-
 					<!-- <TableRow> <TextView android:text="@string/midnight" android:padding="3dip" 
 						/> <TextView android:gravity="right" android:padding="3dip" android:id="@+id/midnightID" 
 						/> </TableRow> -->
 				</TableLayout>
-
-
+				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:paddingTop="5px"
+					android:paddingLeft="145px">
+					<TableRow>
+						<Button
+							android:background="@drawable/arrow_backward"
+							android:gravity="center"
+							android:id="@+id/nextBtn"
+						/>
+					</TableRow>
+				</TableLayout>
 			</LinearLayout>
 		</LinearLayout>
-
 		<LinearLayout android:id="@+id/tabcontent2"
 			android:layout_width="fill_parent" android:layout_height="fill_parent">
-
 			<LinearLayout android:layout_width="fill_parent"
 				android:layout_height="fill_parent" android:orientation="vertical">
 				<RelativeLayout android:layout_width="fill_parent"
-					android:layout_height="wrap_content" android:paddingBottom="30px">
-					
-					
-					<Button
-						android:layout_marginLeft="15px"
-						android:textColor="#000" android:background="@drawable/backward"
-						android:layout_width="77px" android:layout_height="53px" 
-						android:id="@+id/previous" />
+					android:layout_height="wrap_content">
 					<TextView android:gravity="center" android:padding="3dip"
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -122,93 +101,69 @@
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/tommorrowId"
 						android:id="@+id/tommorrowTextID" android:visibility="gone" />
-					<TextView android:gravity="center" 
+						<TextView android:gravity="center" 
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:layout_below="@id/tommorrowTextID" android:id="@+id/LocationTextID2" />			
-					
-					
-					
-					
-				<!-- 	<TextView android:gravity="center" android:padding="3dip"
-						android:layout_centerHorizontal="true" 
-						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:id="@+id/tommorrowId" />
-						<Button android:gravity="center"
-						 android:paddingLeft="12dip"
-						android:textColor="#000" android:background="@drawable/backward"
-						android:layout_width="44px" android:layout_height="30px"
-						android:id="@+id/previous" android:layout_toLeftOf="@id/tommorrowId" />
-
-						
-					<TextView android:gravity="center" android:padding="3dip"
-						android:layout_centerHorizontal="true" android:textColor="#000"
-						android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/tommorrowId"
-						android:id="@+id/tommorrowTextID" /> -->
+						android:layout_below="@id/tommorrowTextID" android:id="@+id/LocationTextID2" />				
 				</RelativeLayout>
-
 				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 					android:layout_width="fill_parent" android:layout_height="wrap_content"
 					android:paddingLeft="20px" android:paddingRight="20px" android:id="@+id/athanLayout2"
 					android:stretchColumns="*">
-
 					<!-- <TableRow> <TextView android:text="@string/latitude" android:padding="3dip" 
 						android:textColor="#000" /> <TextView android:padding="3dip" android:id="@+id/latitudeID2" 
 						android:textColor="#000" /> </TableRow> <TableRow> <TextView android:text="@string/longitude" 
 						android:padding="3dip" android:textColor="#000" /> <TextView android:padding="3dip" 
 						android:textColor="#000" android:id="@+id/longitudeID2" /> </TableRow> -->
-
 					<TableRow>
-
 						<TextView android:text="@string/fajr" android:padding="3dip"
 							android:id="@+id/fajrStr2" android:textColor="#000" />
-						<TextView android:gravity="left" android:padding="3dip"
+						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/fajrID2" />
-
 					</TableRow>
 					<TableRow>
-
 						<TextView android:text="@string/sunrise" android:padding="3dip"
 							android:id="@+id/sunriseStr2" android:textColor="#000" />
-						<TextView android:gravity="left" android:padding="3dip"
+						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/sunriseID2" />
-
 					</TableRow>
 					<TableRow>
-
 						<TextView android:text="@string/noon" android:padding="3dip"
 							android:id="@+id/noonStr2" android:textColor="#000" />
-						<TextView android:gravity="left" android:padding="3dip"
+						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/noonID2" />
-
 					</TableRow>
 					<!-- <TableRow> <TextView android:text="@string/asr" android:padding="3dip" 
 						/> <TextView android:gravity="right" android:padding="3dip" android:id="@+id/eveningAthanID" 
 						/> </TableRow> -->
 					<TableRow>
-
 						<TextView android:text="@string/night" android:padding="3dip"
 							android:id="@+id/nightStr2" android:textColor="#000" />
-						<TextView android:gravity="left" android:padding="3dip"
+						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/nightID2" />
-
 					</TableRow>
 					<TableRow>
 						<TextView android:text="@string/nightAthan" android:id="@+id/nightAthanStr2"
 							android:textColor="#000" android:padding="3dip" />
-						<TextView android:gravity="left" android:padding="3dip"
+						<TextView android:gravity="right" android:padding="3dip"
 							android:textColor="#000" android:id="@+id/nightAthanID2" />
-
 					</TableRow>
 					<!-- <TableRow> <TextView android:text="@string/midnight" android:padding="3dip" 
 						/> <TextView android:gravity="right" android:padding="3dip" android:id="@+id/midnightID" 
 						/> </TableRow> -->
 				</TableLayout>
-
+				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:paddingTop="15px"
+					android:paddingLeft="135px">
+					<TableRow>
+						<Button
+						android:background="@drawable/arrow_forward"
+						android:id="@+id/previous"
+						/>
+					</TableRow>
+				</TableLayout>
 			</LinearLayout>
 		</LinearLayout>
-
 	</com.farsitel.athantime.views.PanelSwitcher>
-
-
 </LinearLayout>
