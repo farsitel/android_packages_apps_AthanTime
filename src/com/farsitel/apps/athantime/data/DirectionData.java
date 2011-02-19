@@ -1,4 +1,4 @@
-package com.farsitel.apps.limoo.data;
+package com.farsitel.apps.athantime.data;
 
 public class DirectionData {
     private double northDirectionFromDeviceHead;

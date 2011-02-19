@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package com.farsitel.apps.limoo.views;
+package com.farsitel.apps.athantime.views;
 
-import android.view.animation.TranslateAnimation;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.GestureDetector;
-import android.widget.FrameLayout;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.os.Handler;
-
-import java.util.Map;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 
 public class PanelSwitcher extends FrameLayout {
     private static final int MAJOR_MOVE = 60;
@@ -57,6 +54,7 @@ public class PanelSwitcher extends FrameLayout {
         mCurrentView = 0;
         mGestureDetector = new GestureDetector(context,
                 new GestureDetector.SimpleOnGestureListener() {
+                    @Override
                     public boolean onFling(MotionEvent e1, MotionEvent e2,
                             float velocityX, float velocityY) {
                         int dx = (int) (e2.getX() - e1.getX());
@@ -104,6 +102,7 @@ public class PanelSwitcher extends FrameLayout {
         outRight.setDuration(ANIM_DURATION);
     }
 
+    @Override
     protected void onFinishInflate() {
         int count = getChildCount();
         mChildren = new View[count];
@@ -126,14 +125,14 @@ public class PanelSwitcher extends FrameLayout {
 
     public void moveLeft() {
         // <--
-        if (!mRTL) {
+        if (!isRTL()) {
             if (mCurrentView < mChildren.length - 1 && mPreviousMove != LEFT) {
                 mChildren[1].setVisibility(View.VISIBLE);
                 mChildren[1].startAnimation(inLeft);
                 mChildren[0].startAnimation(outLeft);
                 mChildren[0].setVisibility(View.GONE);
 
-                mCurrentView=1;
+                mCurrentView = 1;
                 mPreviousMove = LEFT;
             }
         } else {
@@ -143,7 +142,7 @@ public class PanelSwitcher extends FrameLayout {
                 mChildren[1].startAnimation(outLeft);
                 mChildren[1].setVisibility(View.GONE);
 
-                mCurrentView=0;
+                mCurrentView = 0;
                 mPreviousMove = LEFT;
             }
         }
@@ -151,14 +150,14 @@ public class PanelSwitcher extends FrameLayout {
 
     public void moveRight() {
         // -->
-        if (!mRTL) {
+        if (!isRTL()) {
             if (mCurrentView > 0 && mPreviousMove != RIGHT) {
                 mChildren[0].setVisibility(View.VISIBLE);
                 mChildren[0].startAnimation(inRight);
                 mChildren[1].startAnimation(outRight);
                 mChildren[1].setVisibility(View.GONE);
 
-                mCurrentView=0;
+                mCurrentView = 0;
                 mPreviousMove = RIGHT;
             }
         } else {
@@ -168,8 +167,8 @@ public class PanelSwitcher extends FrameLayout {
                 mChildren[0].startAnimation(outRight);
                 mChildren[0].setVisibility(View.GONE);
 
-                mCurrentView=1;
-                mPreviousMove =  RIGHT;
+                mCurrentView = 1;
+                mPreviousMove = RIGHT;
             }
         }
     }

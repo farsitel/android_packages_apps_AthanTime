@@ -1,14 +1,14 @@
-package com.farsitel.apps.limoo.logic;
+package com.farsitel.apps.athantime.logic;
 
 
 import java.util.Date;
 import java.util.TimeZone;
 
-import com.farsitel.apps.limoo.data.AthanTime;
-import com.farsitel.apps.limoo.data.DayTime;
-import com.farsitel.apps.limoo.util.JulianGregorianConverter;
-import com.farsitel.apps.limoo.util.MathUtil;
-import com.farsitel.apps.limoo.util.TimeZoneUtil;
+import com.farsitel.apps.athantime.data.AthanTime;
+import com.farsitel.apps.athantime.data.DayTime;
+import com.farsitel.apps.athantime.util.JulianGregorianConverter;
+import com.farsitel.apps.athantime.util.MathUtil;
+import com.farsitel.apps.athantime.util.TimeZoneUtil;
 
 public class CopyOfAthanTimeCalculator {
 

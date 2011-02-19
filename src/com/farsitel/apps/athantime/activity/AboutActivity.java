@@ -1,6 +1,6 @@
-package com.farsitel.apps.limoo.activity;
+package com.farsitel.apps.athantime.activity;
 
-import com.farsitel.apps.limoo.R;
+import com.farsitel.apps.athantime.R;
 
 import android.app.Activity;
 import android.content.res.Configuration;

@@ -1,4 +1,4 @@
-package com.farsitel.apps.limoo.logic;
+package com.farsitel.apps.athantime.logic;
 
 
 import java.util.ArrayList;
@@ -7,7 +7,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-public class PrayTime {
+import com.farsitel.apps.athantime.data.AthanTime;
+import com.farsitel.apps.athantime.data.DayTime;
+
+public class AthanTimeCalculator {
 
     // ---------------------- Global Variables --------------------
     private int calcMethod; // caculation method
@@ -21,27 +24,27 @@ public class PrayTime {
     private double JDate; // Julian date
     // ------------------------------------------------------------
     // Calculation Methods
-    private int Jafari; // Ithna Ashari
-    private int Karachi; // University of Islamic Sciences, Karachi
-    private int ISNA; // Islamic Society of North America (ISNA)
-    private int MWL; // Muslim World League (MWL)
-    private int Makkah; // Umm al-Qura, Makkah
-    private int Egypt; // Egyptian General Authority of Survey
-    private int Custom; // Custom Setting
-    private int Tehran; // Institute of Geophysics, University of Tehran
+    public static int Jafari; // Ithna Ashari
+    public static int Karachi; // University of Islamic Sciences, Karachi
+    public static int ISNA; // Islamic Society of North America (ISNA)
+    public static int MWL; // Muslim World League (MWL)
+    public static int Makkah; // Umm al-Qura, Makkah
+    public static int Egypt; // Egyptian General Authority of Survey
+    public static int Custom; // Custom Setting
+    public static int Tehran; // Institute of Geophysics, University of Tehran
     // Juristic Methods
-    private int Shafii; // Shafii (standard)
-    private int Hanafi; // Hanafi
+    public static int Shafii; // Shafii (standard)
+    public static int Hanafi; // Hanafi
     // Adjusting Methods for Higher Latitudes
-    private int None; // No adjustment
-    private int MidNight; // middle of night
-    private int OneSeventh; // 1/7th of night
-    private int AngleBased; // angle/60th of night
+    public static int None; // No adjustment
+    public static int MidNight; // middle of night
+    public static int OneSeventh; // 1/7th of night
+    public static int AngleBased; // angle/60th of night
     // Time Formats
-    private int Time24; // 24-hour format
-    private int Time12; // 12-hour format
-    private int Time12NS; // 12-hour format with no suffix
-    private int Floating; // floating point number
+    public static int Time24; // 24-hour format
+    public static int Time12; // 12-hour format
+    public static int Time12NS; // 12-hour format with no suffix
+    public static int Floating; // floating point number
     // Time Names
     private ArrayList<String> timeNames;
     private String InvalidTime; // The string used for invalid times
@@ -61,7 +64,7 @@ public class PrayTime {
     private double[] prayerTimesCurrent;
     private int[] offsets;
 
-    public PrayTime() {
+    public AthanTimeCalculator() {
         // Initialize vars
 
         this.setCalcMethod(0);
@@ -135,7 +138,7 @@ public class PrayTime {
         methodParams = new HashMap<Integer, double[]>();
 
         // Jafari
-        double[] Jvalues = {16,0,4,0,14};
+        double[] Jvalues = {18.3,0,4,0,14};
         methodParams.put(Integer.valueOf(this.getJafari()), Jvalues);
 
         // Karachi
@@ -243,14 +246,14 @@ public class PrayTime {
 
     // ---------------------- Time-Zone Functions -----------------------
     // compute local time-zone for a specific date
-    private double getTimeZone1() {
+    public double getTimeZone1() {
         TimeZone timez = TimeZone.getDefault();
         double hoursDiff = (timez.getRawOffset() / 1000.0) / 3600;
         return hoursDiff;
     }
 
     // compute base time-zone of the system
-    private double getBaseTimeZone() {
+    public double getBaseTimeZone() {
         TimeZone timez = TimeZone.getDefault();
         double hoursDiff = (timez.getRawOffset() / 1000.0) / 3600;
         return hoursDiff;
@@ -258,7 +261,7 @@ public class PrayTime {
     }
 
     // detect daylight saving in a given date
-    private double detectDaylightSaving() {
+    public double detectDaylightSaving() {
         TimeZone timez = TimeZone.getDefault();
         double hoursDiff = timez.getDSTSavings();
         return hoursDiff;
@@ -379,14 +382,24 @@ public class PrayTime {
     }
 
     // return prayer times for a given date
-    public ArrayList<String> getPrayerTimes(Calendar date, double latitude,
+    public AthanTime getPrayerTimes(Calendar date, double latitude,
             double longitude, double tZone) {
 
         int year = date.get(Calendar.YEAR);
         int month = date.get(Calendar.MONTH);
         int day = date.get(Calendar.DATE);
-
-        return getDatePrayerTimes(year, month+1, day, latitude, longitude, tZone);
+        this.setTimeFormat(this.Floating);
+        ArrayList<String> results = getDatePrayerTimes(year, month+1, day, latitude, longitude, tZone);
+        
+        AthanTime athanTime = new AthanTime();
+        athanTime.setFajr(floatToTime24(Double.parseDouble(results.get(0))));
+        athanTime.setSunrise(floatToTime24(Double.parseDouble(results.get(1))));
+        athanTime.setDhuhr(floatToTime24(Double.parseDouble(results.get(2))));
+        athanTime.setAsr(floatToTime24(Double.parseDouble(results.get(3))));
+        athanTime.setSunset(floatToTime24(Double.parseDouble(results.get(4))));
+        athanTime.setMaghrib(floatToTime24(Double.parseDouble(results.get(5))));
+        athanTime.setIsha(floatToTime24(Double.parseDouble(results.get(6))));
+        return athanTime;
     }
 
     // set custom values for calculation parameters
@@ -438,27 +451,28 @@ public class PrayTime {
     }
 
     // convert double hours to 24h format
-    public String floatToTime24(double time) {
-
-        String result;
-
-        if (Double.isNaN(time)) {
-            return InvalidTime;
-        }
+    public DayTime floatToTime24(double time) {
+//
+//        String result;
+//
+//        if (Double.isNaN(time)) {
+//            return InvalidTime;
+//        }
 
         time = fixhour(time + 0.5 / 60.0); // add 0.5 minutes to round
         int hours = (int)Math.floor(time);
         double minutes = Math.floor((time - hours) * 60.0);
 
-        if ((hours >= 0 && hours <= 9) && (minutes >= 0 && minutes <= 9)) {
-            result = "0" + hours + ":0" + Math.round(minutes);
-        } else if ((hours >= 0 && hours <= 9)) {
-            result = "0" + hours + ":" + Math.round(minutes);
-        } else if ((minutes >= 0 && minutes <= 9)) {
-            result = hours + ":0" + Math.round(minutes);
-        } else {
-            result = hours + ":" + Math.round(minutes);
-        }
+//        if ((hours >= 0 && hours <= 9) && (minutes >= 0 && minutes <= 9)) {
+//            result = "0" + hours + ":0" + Math.round(minutes);
+//        } else if ((hours >= 0 && hours <= 9)) {
+//            result = "0" + hours + ":" + Math.round(minutes);
+//        } else if ((minutes >= 0 && minutes <= 9)) {
+//            result = hours + ":0" + Math.round(minutes);
+//        } else {
+//            result = hours + ":" + Math.round(minutes);
+//        }
+        DayTime result = new DayTime(hours,new Double(Math.floor(minutes)).intValue(),0);
         return result;
     }
 
@@ -595,11 +609,37 @@ public class PrayTime {
             } else if (this.getTimeFormat() == this.getTime12NS()) {
                 result.add(floatToTime12(times[i], true));
             } else {
-                result.add(floatToTime24(times[i]));
+                result.add(floatToTime241(times[i]));
             }
         }
         return result;
     }
+    
+    
+    public String floatToTime241(double time) {
+
+        String result;
+
+        if (Double.isNaN(time)) {
+            return InvalidTime;
+        }
+
+        time = fixhour(time + 0.5 / 60.0); // add 0.5 minutes to round
+        int hours = (int)Math.floor(time);
+        double minutes = Math.floor((time - hours) * 60.0);
+
+        if ((hours >= 0 && hours <= 9) && (minutes >= 0 && minutes <= 9)) {
+            result = "0" + hours + ":0" + Math.round(minutes);
+        } else if ((hours >= 0 && hours <= 9)) {
+            result = "0" + hours + ":" + Math.round(minutes);
+        } else if ((minutes >= 0 && minutes <= 9)) {
+            result = hours + ":0" + Math.round(minutes);
+        } else {
+            result = hours + ":" + Math.round(minutes);
+        }
+        return result;
+    }
+
 
     // adjust Fajr, Isha and Maghrib for locations in higher latitudes
     private double[] adjustHighLatTimes(double[] times) {
@@ -680,7 +720,7 @@ public class PrayTime {
         double longitude = 51.42;
         double timezone = 3.5;
         // Test Prayer times here
-        PrayTime prayers = new PrayTime();
+        AthanTimeCalculator prayers = new AthanTimeCalculator();
 
         prayers.setTimeFormat(prayers.Time12);
         prayers.setCalcMethod(prayers.Jafari);
@@ -693,13 +733,13 @@ public class PrayTime {
         Calendar cal = Calendar.getInstance();
         cal.setTime(now);
         System.out.println(cal.get(Calendar.YEAR) + " " + cal.get(Calendar.MONTH)+ " " + cal.get(Calendar.DATE) );
-        ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal,
-                latitude, longitude, timezone);
-        ArrayList<String> prayerNames = prayers.getTimeNames();
-
-        for (int i = 0; i < prayerTimes.size(); i++) {
-            System.out.println(prayerNames.get(i) + " - " + prayerTimes.get(i));
-        }
+//        ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal,
+//                latitude, longitude, timezone);
+//        ArrayList<String> prayerNames = prayers.getTimeNames();
+//
+//        for (int i = 0; i < prayerTimes.size(); i++) {
+//            System.out.println(prayerNames.get(i) + " - " + prayerTimes.get(i));
+//        }
 
     }
 
