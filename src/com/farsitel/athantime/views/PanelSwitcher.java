@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.farsitel.apps.athantime.views;
+package com.farsitel.athantime.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -23,6 +23,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
+
+import java.util.Locale;
 
 public class PanelSwitcher extends FrameLayout {
     private static final int MAJOR_MOVE = 60;
@@ -46,7 +48,7 @@ public class PanelSwitcher extends FrameLayout {
     private int mPreviousMove;
 
     public boolean isRTL() {
-        return mRTL;
+        return "fa".equals(Locale.getDefault().getLanguage()); // FIXME mRTL;
     }
 
     public PanelSwitcher(Context context, AttributeSet attrs) {

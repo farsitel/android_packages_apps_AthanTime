@@ -1,4 +1,4 @@
-package com.farsitel.apps.athantime.logic;
+package com.farsitel.athantime.logic;
 
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.TimeZone;
 
 import android.location.Location;
 
-import com.farsitel.apps.athantime.data.AthanTime;
+import com.farsitel.athantime.data.AthanTime;
 
 public class OghatManager {
 //    private List<PrayerTimeChangeListener> prayerTimeChangeListeners = new ArrayList<PrayerTimeChangeListener>();

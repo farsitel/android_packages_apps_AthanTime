@@ -5,7 +5,7 @@
 	android:id="@+id/layout" android:paddingTop="230px"
 	android:paddingLeft="80px" android:paddingRight="80px"
 	android:paddingBottom="80px">
-	<com.farsitel.apps.athantime.views.PanelSwitcher
+	<com.farsitel.athantime.views.PanelSwitcher
 		android:id="@+id/panelswitch" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:layout_weight="4">
 		<LinearLayout android:id="@+id/tabcontent"
@@ -26,7 +26,7 @@
 					<TextView android:gravity="center" android:padding="3dip"
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:layout_below="@id/todayID" android:id="@+id/todayTextID" />
+						android:layout_below="@id/todayID" android:id="@+id/todayTextID" android:visibility="gone" />
 					<TextView android:gravity="center" android:padding="3dip"
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
 					<TextView android:gravity="center" android:padding="3dip"
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/tommorrowId"
-						android:id="@+id/tommorrowTextID" />
+						android:id="@+id/tommorrowTextID" android:visibility="gone" />
 						<TextView android:gravity="center" 
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -182,7 +182,7 @@
 
 
 
-	</com.farsitel.apps.athantime.views.PanelSwitcher>
+	</com.farsitel.athantime.views.PanelSwitcher>
 
 
 </LinearLayout>

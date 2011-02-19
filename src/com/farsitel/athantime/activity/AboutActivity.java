@@ -1,6 +1,6 @@
-package com.farsitel.apps.athantime.activity;
+package com.farsitel.athantime.activity;
 
-import com.farsitel.apps.athantime.R;
+import com.farsitel.athantime.R;
 
 import android.app.Activity;
 import android.content.res.Configuration;

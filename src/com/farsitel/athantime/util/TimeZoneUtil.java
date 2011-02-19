@@ -1,4 +1,4 @@
-package com.farsitel.apps.athantime.util;
+package com.farsitel.athantime.util;
 
 
 import java.util.Calendar;

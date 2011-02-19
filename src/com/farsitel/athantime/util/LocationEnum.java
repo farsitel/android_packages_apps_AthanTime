@@ -1,9 +1,9 @@
-package com.farsitel.apps.athantime.util;
+package com.farsitel.athantime.util;
 
 import android.content.Context;
 import android.location.Location;
 
-import com.farsitel.apps.athantime.R;
+import com.farsitel.athantime.R;
 
 public enum LocationEnum {
     MENU_ARAK(1, 34.08, 49.7), MENU_ARDABIL(2, 38.25, 48.28), MENU_ORUMIYEH(3,

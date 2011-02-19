@@ -1,4 +1,4 @@
-package com.farsitel.apps.athantime.activity;
+package com.farsitel.athantime.activity;
 
 /*
  * This is the main Activity for Athan application.
@@ -8,6 +8,7 @@ package com.farsitel.apps.athantime.activity;
  */
 
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,13 +35,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.farsitel.apps.athantime.R;
-import com.farsitel.apps.athantime.data.AthanTime;
-import com.farsitel.apps.athantime.data.DayTime;
-import com.farsitel.apps.athantime.logic.AthanTimeCalculator;
-import com.farsitel.apps.athantime.util.ConstantUtilInterface;
-import com.farsitel.apps.athantime.util.LocationEnum;
-import com.farsitel.apps.athantime.views.PanelSwitcher;
+import com.farsitel.athantime.R;
+import com.farsitel.athantime.data.AthanTime;
+import com.farsitel.athantime.data.DayTime;
+import com.farsitel.athantime.logic.AthanTimeCalculator;
+import com.farsitel.athantime.util.ConstantUtilInterface;
+import com.farsitel.athantime.util.LocationEnum;
+import com.farsitel.athantime.views.PanelSwitcher;
 
 public class AthanTimeActivity extends Activity implements LocationListener,
         OnSharedPreferenceChangeListener, OnClickListener,
@@ -461,14 +462,30 @@ public class AthanTimeActivity extends Activity implements LocationListener,
     private String getFormattedDate(Calendar c) {
         return ""
                 + android.text.format.DateFormat.format("d MMM yyy",
-                        c.getTimeInMillis());
+                        c.getTimeInMillis()); // FIXME , this);
     }
 
     private String getTimeForPrint(DayTime dayTime) {
         int hour = dayTime.getHour();
         int minute = dayTime.getMinute();
-        return String.format("%L02d:%L02d", hour, minute);
+        return persianDigitsIfPersian(String.format("%02d:%02d", hour, minute));
+    }
 
+    private String persianDigitsIfPersian(String str) {
+        if (!"fa".equals(Locale.getDefault().getLanguage()))
+            return str;
+
+        String result = "";
+        char ch;
+        int i;
+        for (i = 0; i < str.length(); i++) {
+            ch = str.charAt(i);
+            if ((ch >= '0') && (ch <= '9'))
+                result += Character.toString((char)(0x06f0 + (ch - '0')));
+            else
+                result += ch;
+        }
+        return result;
     }
 
     // private String getLocationForPrint(double value, boolean isLatitude) {
@@ -598,10 +615,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         int defLocationID = Integer.parseInt(perfs.getString(key, ""
                 + LocationEnum.MENU_TEHRAN.getId()));
         LocationEnum locationEnum = LocationEnum.values()[defLocationID - 1];
-        Log.d("shari", locationEnum + " enum");
         Location location = locationEnum.getLocation();
-        Log.i("Ahan Time", "who is null: " + findViewById(R.id.LocationTextID2)
-                + " * " + getString(R.string.be_ofogh) + " * " + locationEnum);
         ((TextView) findViewById(R.id.LocationTextID)).setText(String.format(
                 getString(R.string.be_ofogh), locationEnum.getName(this)));
         ((TextView) findViewById(R.id.LocationTextID2)).setText(String.format(

@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.farsitel.apps.athantime"
-      android:versionCode="1"
-      android:versionName="1.0" debuggable="true">
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar">
+          package="com.farsitel.athantime"
+          android:versionCode="2"
+          android:versionName="1.1"
+          debuggable="true">
+    <application android:icon="@drawable/icon"
+                 android:label="@string/app_name"
+                 android:theme="@android:style/Theme.NoTitleBar">
         <activity android:name=".activity.AthanTimeActivity"
-                  android:label="@string/app_name" android:screenOrientation="portrait">
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.UserPreferenceActivity">
-		</activity>
-		<activity android:name=".activity.HelpActivity">
-		</activity>
-		<activity android:name=".activity.AboutActivity"
-          android:label="@string/about_menu_title">
-		</activity>
+        <activity android:name=".activity.UserPreferenceActivity" />
+        <activity android:name=".activity.HelpActivity" />
+        <activity android:name=".activity.AboutActivity"
+                  android:label="@string/about_menu_title" />
     </application>
-    <uses-sdk android:minSdkVersion="6" />
  
+    <uses-sdk android:minSdkVersion="4" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
