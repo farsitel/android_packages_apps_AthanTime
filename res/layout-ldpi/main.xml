@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:background="@drawable/background"
-	android:id="@+id/layout" android:paddingTop="200px"
-	android:paddingLeft="70px" android:paddingRight="70px"
-	android:paddingBottom="40px">
+	android:id="@+id/layout" android:paddingTop="70px"
+	android:paddingLeft="30px" android:paddingRight="30px"
+	android:paddingBottom="30px">
 	<com.farsitel.athantime.views.PanelSwitcher
 		android:id="@+id/panelswitch" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:layout_weight="4">
@@ -15,7 +15,7 @@
 				<RelativeLayout android:layout_width="fill_parent"
 					android:layout_height="wrap_content">
 					<TextView android:gravity="center"
-						android:text="@string/today" android:textSize="15sp"
+						android:text="@string/today" android:textSize="25sp"
 						android:layout_centerHorizontal="true" android:textColor="#000"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
 						android:id="@+id/todayID" />
@@ -30,47 +30,47 @@
 				</RelativeLayout>
 				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 					android:layout_width="fill_parent" android:layout_height="wrap_content"
-					android:id="@+id/athanLayout1" android:stretchColumns="*"
-					android:paddingTop="20px"
+					android:id="@+id/athanLayout1" android:stretchColumns="*" android:paddingTop="5px"
 					android:paddingLeft="20px" android:paddingRight="20px">
 					<TableRow>
-						<TextView android:text="@string/fajr" android:paddingBottom="20px"
+						<TextView android:text="@string/fajr" android:paddingBottom="5px"
 							android:id="@+id/fajrStr" android:textColor="#000" />
-						<TextView android:gravity="left" android:paddingBottom="20px"
+						<TextView android:gravity="right" android:paddingBottom="5px"
 							android:textColor="#000" android:id="@+id/fajrID" />
 					</TableRow>
 					<TableRow>
-						<TextView android:text="@string/sunrise" android:paddingBottom="20px"
+						<TextView android:text="@string/sunrise" android:paddingBottom="5px"
 							android:id="@+id/sunriseStr" android:textColor="#000" />
-						<TextView android:gravity="left" android:paddingBottom="20px"
+						<TextView android:gravity="right" android:paddingBottom="5px"
 							android:textColor="#000" android:id="@+id/sunriseID" />
 					</TableRow>
 					<TableRow>
-						<TextView android:text="@string/noon" android:paddingBottom="20px"
+						<TextView android:text="@string/noon" android:paddingBottom="5px"
 							android:id="@+id/noonStr" android:textColor="#000" />
-						<TextView android:gravity="left" android:paddingBottom="20px"
+						<TextView android:gravity="right" android:paddingBottom="5px"
 							android:textColor="#000" android:id="@+id/noonID" />
 					</TableRow>
+
 					<TableRow>
-						<TextView android:text="@string/night" android:paddingBottom="20px"
+						<TextView android:text="@string/night" android:paddingBottom="5px"
 							android:id="@+id/nightStr" android:textColor="#000" />
-						<TextView android:gravity="left" android:paddingBottom="20px"
+						<TextView android:gravity="right" android:paddingBottom="5px"
 							android:textColor="#000" android:id="@+id/nightID" />
 					</TableRow>
 					<TableRow>
 						<TextView android:text="@string/nightAthan" android:id="@+id/nightAthanStr"
-							android:textColor="#000" android:paddingBottom="20px" />
-						<TextView android:gravity="left" android:paddingBottom="20px"
+							android:textColor="#000" android:paddingBottom="5px" />
+						<TextView android:gravity="right" android:paddingBottom="5px"
 							android:textColor="#000" android:id="@+id/nightAthanID" />
 					</TableRow>
 				</TableLayout>
 				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 					android:layout_width="wrap_content" android:layout_height="wrap_content"
 					android:paddingTop="5px"
-					android:paddingLeft="150px">
+					android:paddingLeft="75px">
 					<TableRow>
 						<Button
-							android:background="@drawable/arrow_backward"
+							android:background="@drawable/arrow_forward"
 							android:gravity="center"
 							android:id="@+id/nextBtn"
 						/>
@@ -98,47 +98,47 @@
 						android:layout_below="@id/tommorrowTextID" android:id="@+id/LocationTextID2" />				
 				</RelativeLayout>
 				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-					android:layout_width="fill_parent" android:layout_height="wrap_content"
+					android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingTop="5px"
 					android:paddingLeft="20px" android:paddingRight="20px" android:id="@+id/athanLayout2"
-					android:paddingTop="20px" android:stretchColumns="*">
+					android:stretchColumns="*">
 					<TableRow>
-						<TextView android:text="@string/fajr" android:paddingBottom="20px"
+						<TextView android:text="@string/fajr" android:paddingBottom="5px"
 							android:id="@+id/fajrStr2" android:textColor="#000" />
-						<TextView android:gravity="left" android:paddingBottom="20px"
+						<TextView android:gravity="right" android:paddingBottom="5px"
 							android:textColor="#000" android:id="@+id/fajrID2" />
 					</TableRow>
 					<TableRow>
-						<TextView android:text="@string/sunrise" android:paddingBottom="20px"
+						<TextView android:text="@string/sunrise" android:paddingBottom="5px"
 							android:id="@+id/sunriseStr2" android:textColor="#000" />
-						<TextView android:gravity="left" android:paddingBottom="20px"
+						<TextView android:gravity="right" android:paddingBottom="5px"
 							android:textColor="#000" android:id="@+id/sunriseID2" />
 					</TableRow>
 					<TableRow>
-						<TextView android:text="@string/noon" android:paddingBottom="20px"
+						<TextView android:text="@string/noon" android:paddingBottom="5px"
 							android:id="@+id/noonStr2" android:textColor="#000" />
-						<TextView android:gravity="left" android:paddingBottom="20px"
+						<TextView android:gravity="right" android:paddingBottom="5px"
 							android:textColor="#000" android:id="@+id/noonID2" />
 					</TableRow>
 					<TableRow>
-						<TextView android:text="@string/night" android:paddingBottom="20px"
+						<TextView android:text="@string/night" android:paddingBottom="5px"
 							android:id="@+id/nightStr2" android:textColor="#000" />
-						<TextView android:gravity="left" android:paddingBottom="20px"
+						<TextView android:gravity="right" android:paddingBottom="5px"
 							android:textColor="#000" android:id="@+id/nightID2" />
 					</TableRow>
 					<TableRow>
 						<TextView android:text="@string/nightAthan" android:id="@+id/nightAthanStr2"
-							android:textColor="#000" android:paddingBottom="20px" />
-						<TextView android:gravity="left" android:paddingBottom="20px"
+							android:textColor="#000" android:paddingBottom="5px" />
+						<TextView android:gravity="right" android:paddingBottom="5px"
 							android:textColor="#000" android:id="@+id/nightAthanID2" />
 					</TableRow>
 				</TableLayout>
 				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:paddingTop="10px"
-					android:paddingLeft="150px">
+					android:paddingTop="5px"
+					android:paddingLeft="75px">
 					<TableRow>
 						<Button
-						android:background="@drawable/arrow_forward"
+						android:background="@drawable/arrow_backward"
 						android:id="@+id/previous"
 						/>
 					</TableRow>

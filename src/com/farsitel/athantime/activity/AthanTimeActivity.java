@@ -145,22 +145,6 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         TextView todayTextID = (TextView) findViewById(R.id.todayTextID);
         TextView tommorrowID = (TextView) findViewById(R.id.tommorrowId);
         TextView tommorrowTextID = (TextView) findViewById(R.id.tommorrowTextID);
-        float dimension = getResources().getDimension(R.dimen.small_text_size);
-        todayID.setTextColor(getResources().getColor(R.color.red));
-        tommorrowID.setTextColor(getResources().getColor(R.color.red));
-        todayID.setTextSize(dimension);
-        todayTextID.setTextSize(dimension);
-        todayTextID.setPadding(todayTextID.getPaddingLeft(), 20,
-                todayTextID.getPaddingRight(), 20);
-        todayID.setPadding(todayID.getPaddingLeft(), 20,
-                todayID.getPaddingRight(), 20);
-        // tommorrowID.setTextSize(dimension);
-        tommorrowTextID.setPadding(tommorrowTextID.getPaddingLeft(), 20,
-                tommorrowTextID.getPaddingRight(), 20);
-        // tommorrowTextID.setTextSize(dimension);
-        tommorrowID.setPadding(tommorrowID.getPaddingLeft(), 20,
-                tommorrowID.getPaddingRight(), 20);
-
         // String line1 = getString(R.string.no_location_line1);
         String line1 = "";
         String line2 = getString(R.string.no_location_yet);
@@ -259,35 +243,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         TextView tomorrowMaghribStr = (TextView) findViewById(R.id.nightAthanStr2);
         ((Button) findViewById(R.id.previous)).setVisibility(View.VISIBLE);
         ((Button) findViewById(R.id.nextBtn)).setVisibility(View.VISIBLE);
-        int paddingBottom = 22;
-        int paddingTop = 0;
-        int paddingRight = 0;
-        int paddingLeft = 0;
-        //
-        todayFajr.setPadding(paddingLeft, paddingTop, paddingRight,
-                paddingBottom);
-        todaySunrise.setPadding(paddingLeft, paddingTop, paddingRight,
-                paddingBottom);
-        todayDhuhr.setPadding(paddingLeft, paddingTop, paddingRight,
-                paddingBottom);
-        todaySunset.setPadding(paddingLeft, paddingTop, paddingRight,
-                paddingBottom);
-        todayMaghrib.setPadding(paddingLeft, paddingTop, paddingRight,
-                paddingBottom);
-        tomorrowFajr.setPadding(paddingLeft, paddingTop, paddingRight,
-                paddingBottom);
-        tomorrowSunrise.setPadding(paddingLeft, paddingTop, paddingRight,
-                paddingBottom);
-        tomorrowDhuhr.setPadding(paddingLeft, paddingTop, paddingRight,
-                paddingBottom);
-        tomorrowSunset.setPadding(paddingLeft, paddingTop, paddingRight,
-                paddingBottom);
-        tomorrowMaghrib.setPadding(paddingLeft, paddingTop, paddingRight,
-                paddingBottom);
-        todayText.setPadding(40, paddingTop, 40, 10);
-        todayDateText.setPadding(7, paddingTop, 7, 10);
-        tomorrowText.setPadding(40, paddingTop, 40, 10);
-        tomorrowDateText.setPadding(7, paddingTop, 7, 10);
+
         //
         todayFajr.setTextSize(getResources().getDimension(
                 R.dimen.about_text_size));
@@ -422,7 +378,6 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         dateText = (TextView) findViewById(R.id.todayTextID);
 
         dateText.setText(getFormattedDate(c));
-        datePrefixText.setText(getString(R.string.today));
         fajr.setText(getTimeForPrint(todayPrayerTimes.getFajr()));
         sunrise.setText(getTimeForPrint(todayPrayerTimes.getSunrise()));
         duhr.setText(getTimeForPrint(todayPrayerTimes.getDhuhr()));

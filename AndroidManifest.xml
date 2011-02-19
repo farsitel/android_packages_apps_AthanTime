@@ -15,9 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.UserPreferenceActivity" />
-        <activity android:name=".activity.HelpActivity" />
-        <activity android:name=".activity.AboutActivity"
+        <activity android:name=".activity.UserPreferenceActivity" android:screenOrientation="portrait"  />
+        <activity android:name=".activity.HelpActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.AboutActivity" android:screenOrientation="portrait"
                   android:label="@string/about_menu_title" />
     </application>
  
