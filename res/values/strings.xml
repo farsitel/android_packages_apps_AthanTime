@@ -12,7 +12,7 @@
 
 	<string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
-    <string name="be_ofogh">In %s</string>
+    <string name="be_ofogh">in %s</string>
 
 	<string name="no_location_yet">Please wait. Detecting your location...\nOr you can select your city in the Settings.</string>
 
