@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:background="@drawable/background"
-	android:id="@+id/layout" android:paddingTop="200px"
-	android:paddingLeft="70px" android:paddingRight="70px"
-	android:paddingBottom="40px">
+	android:id="@+id/layout">
 	<com.farsitel.athantime.views.PanelSwitcher
 		android:id="@+id/panelswitch" android:layout_width="fill_parent"
+		android:layout_marginTop="200px" android:layout_marginRight="70px"
+		android:layout_marginLeft="70px"
 		android:layout_height="fill_parent" android:layout_weight="4">
 		<LinearLayout android:id="@+id/tabcontent"
 			android:layout_width="fill_parent" android:layout_height="fill_parent">
@@ -146,4 +146,8 @@
 			</LinearLayout>
 		</LinearLayout>
 	</com.farsitel.athantime.views.PanelSwitcher>
+	<ImageView
+		android:layout_width="320dp" android:layout_height="48dp"
+		android:layout_gravity="top"
+		android:src="@color/red" />
 </LinearLayout>
