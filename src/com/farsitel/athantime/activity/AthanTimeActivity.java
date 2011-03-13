@@ -180,8 +180,10 @@ public class AthanTimeActivity extends Activity implements LocationListener,
             LocationManager locationManager = ((LocationManager) getSystemService(Context.LOCATION_SERVICE));
             String provider = locationManager.getBestProvider(criteria, true);
 
-            locationManager.requestLocationUpdates(provider, MIN_LOCATION_TIME,
-                    MIN_LOCATION_DISTANCE, this);
+            if (provider != null) {
+                locationManager.requestLocationUpdates(provider, MIN_LOCATION_TIME,
+                        MIN_LOCATION_DISTANCE, this);
+            }
             locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, MIN_LOCATION_TIME,
                     MIN_LOCATION_DISTANCE, this);
