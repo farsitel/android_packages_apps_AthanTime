@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2011 Iranian Supreme Council of ICT, The FarsiTel Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASICS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.farsitel.athantime.activity;
 
 /*
@@ -181,8 +197,8 @@ public class AthanTimeActivity extends Activity implements LocationListener,
             String provider = locationManager.getBestProvider(criteria, true);
 
             if (provider != null) {
-                locationManager.requestLocationUpdates(provider, MIN_LOCATION_TIME,
-                        MIN_LOCATION_DISTANCE, this);
+                locationManager.requestLocationUpdates(provider,
+                        MIN_LOCATION_TIME, MIN_LOCATION_DISTANCE, this);
             }
             locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, MIN_LOCATION_TIME,
@@ -303,6 +319,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
 
     @Override
     public void onLocationChanged(Location location) {
+
         panelSwitcher = (PanelSwitcher) findViewById(R.id.panelswitch);
         Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getDefault());
@@ -310,11 +327,11 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         if ((previousLocation == null)
                 || (isFarEnough(location, previousLocation))
                 || isDateChanged(c)) {
-            if (athanTime == null) {
-                athanTime = new AthanTimeCalculator();
-                athanTime = prepareAthanCalculator(athanTime);
-                previousLocation = location;
-            }
+            // if (athanTime == null) {
+            athanTime = new AthanTimeCalculator();
+            athanTime = prepareAthanCalculator(athanTime);
+            previousLocation = location;
+            // }
 
             athanTime.setCalcMethod(AthanTimeCalculator.Jafari);
             athanTime.setAsrJuristic(AthanTimeCalculator.Shafii);
@@ -438,7 +455,7 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         for (i = 0; i < str.length(); i++) {
             ch = str.charAt(i);
             if ((ch >= '0') && (ch <= '9'))
-                result += Character.toString((char)(0x06f0 + (ch - '0')));
+                result += Character.toString((char) (0x06f0 + (ch - '0')));
             else
                 result += ch;
         }
@@ -527,10 +544,6 @@ public class AthanTimeActivity extends Activity implements LocationListener,
         case (MENU_ABOUT):
             Intent i2 = new Intent(this, AboutActivity.class);
             startActivityForResult(i2, 2);
-            return true;
-        case (MENU_HELP):
-            Intent i3 = new Intent(this, HelpActivity.class);
-            startActivityForResult(i3, 3);
             return true;
         default:
             return false;

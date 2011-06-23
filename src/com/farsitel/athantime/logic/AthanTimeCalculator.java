@@ -1,5 +1,20 @@
-package com.farsitel.athantime.logic;
+/*
+ * Copyright (C) 2011 Iranian Supreme Council of ICT, The FarsiTel Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASICS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+package com.farsitel.athantime.logic;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,23 +61,23 @@ public class AthanTimeCalculator {
     public static int Time12NS; // 12-hour format with no suffix
     public static int Floating; // floating point number
     // Time Names
-    private ArrayList<String> timeNames;
-    private String InvalidTime; // The string used for invalid times
+    private final ArrayList<String> timeNames;
+    private final String InvalidTime; // The string used for invalid times
     // --------------------- Technical Settings --------------------
     private int numIterations; // number of iterations needed to compute times
     // ------------------- Calc Method Parameters --------------------
-    private HashMap<Integer, double[]> methodParams;
+    private final HashMap<Integer, double[]> methodParams;
 
     /*
      * this.methodParams[methodNum] = new Array(fa, ms, mv, is, iv);
-     *
+     * 
      * fa : fajr angle ms : maghrib selector (0 = angle; 1 = minutes after
      * sunset) mv : maghrib parameter value (in angle or minutes) is : isha
      * selector (0 = angle; 1 = minutes after maghrib) iv : isha parameter value
      * (in angle or minutes)
      */
     private double[] prayerTimesCurrent;
-    private int[] offsets;
+    private final int[] offsets;
 
     public AthanTimeCalculator() {
         // Initialize vars
@@ -129,7 +144,7 @@ public class AthanTimeCalculator {
         offsets[6] = 0;
 
         /*
-         *
+         * 
          * fa : fajr angle ms : maghrib selector (0 = angle; 1 = minutes after
          * sunset) mv : maghrib parameter value (in angle or minutes) is : isha
          * selector (0 = angle; 1 = minutes after maghrib) iv : isha parameter
@@ -138,35 +153,35 @@ public class AthanTimeCalculator {
         methodParams = new HashMap<Integer, double[]>();
 
         // Jafari
-        double[] Jvalues = {18.3,0,4,0,14};
+        double[] Jvalues = { 18.3, 0, 4, 0, 14 };
         methodParams.put(Integer.valueOf(this.getJafari()), Jvalues);
 
         // Karachi
-        double[] Kvalues = {18,1,0,0,18};
+        double[] Kvalues = { 18, 1, 0, 0, 18 };
         methodParams.put(Integer.valueOf(this.getKarachi()), Kvalues);
 
         // ISNA
-        double[] Ivalues = {15,1,0,0,15};
+        double[] Ivalues = { 15, 1, 0, 0, 15 };
         methodParams.put(Integer.valueOf(this.getISNA()), Ivalues);
 
         // MWL
-        double[] MWvalues = {18,1,0,0,17};
+        double[] MWvalues = { 18, 1, 0, 0, 17 };
         methodParams.put(Integer.valueOf(this.getMWL()), MWvalues);
 
         // Makkah
-        double[] MKvalues = {18.5,1,0,1,90};
+        double[] MKvalues = { 18.5, 1, 0, 1, 90 };
         methodParams.put(Integer.valueOf(this.getMakkah()), MKvalues);
 
         // Egypt
-        double[] Evalues = {19.5,1,0,0,17.5};
+        double[] Evalues = { 19.5, 1, 0, 0, 17.5 };
         methodParams.put(Integer.valueOf(this.getEgypt()), Evalues);
 
         // Tehran
-        double[] Tvalues = {17.7,0,4.5,0,14};
+        double[] Tvalues = { 17.7, 0, 4.5, 0, 14 };
         methodParams.put(Integer.valueOf(this.getTehran()), Tvalues);
 
         // Custom
-        double[] Cvalues = {18,1,0,0,17};
+        double[] Cvalues = { 18, 1, 0, 0, 17 };
         methodParams.put(Integer.valueOf(this.getCustom()), Cvalues);
 
     }
@@ -263,8 +278,15 @@ public class AthanTimeCalculator {
     // detect daylight saving in a given date
     public double detectDaylightSaving() {
         TimeZone timez = TimeZone.getDefault();
-        double hoursDiff = timez.getDSTSavings();
-        return hoursDiff;
+        if (timez.inDaylightTime(date)) {
+            double hoursDiff = timez.getDSTSavings();
+
+            return hoursDiff;
+
+        } else {
+
+            return 0;
+        }
     }
 
     // ---------------------- Julian Date Functions -----------------------
@@ -313,9 +335,9 @@ public class AthanTimeCalculator {
         // (2*g)];
         double e = 23.439 - (0.00000036 * D);
         double d = darcsin(dsin(e) * dsin(L));
-        double RA = (darctan2((dcos(e) * dsin(L)), (dcos(L))))/ 15.0;
+        double RA = (darctan2((dcos(e) * dsin(L)), (dcos(L)))) / 15.0;
         RA = fixhour(RA);
-        double EqT = q/15.0 - RA;
+        double EqT = q / 15.0 - RA;
         double[] sPosition = new double[2];
         sPosition[0] = d;
         sPosition[1] = EqT;
@@ -349,7 +371,7 @@ public class AthanTimeCalculator {
         double Z = computeMidDay(t);
         double Beg = -dsin(G) - dsin(D) * dsin(this.getLat());
         double Mid = dcos(D) * dcos(this.getLat());
-        double V = darccos(Beg/Mid)/15.0;
+        double V = darccos(Beg / Mid) / 15.0;
 
         return Z + (G > 90 ? -V : V);
     }
@@ -368,10 +390,13 @@ public class AthanTimeCalculator {
         return fixhour(time2 - time1);
     }
 
+    Date date;
+
     // -------------------- Interface Functions --------------------
     // return prayer times for a given date
-    public ArrayList<String> getDatePrayerTimes(int year, int month, int day,
+    private ArrayList<String> getDatePrayerTimes(int year, int month, int day,
             double latitude, double longitude, double tZone) {
+
         this.setLat(latitude);
         this.setLng(longitude);
         this.setTimeZone(tZone);
@@ -385,12 +410,14 @@ public class AthanTimeCalculator {
     public AthanTime getPrayerTimes(Calendar date, double latitude,
             double longitude, double tZone) {
 
+        this.date = date.getTime();
         int year = date.get(Calendar.YEAR);
         int month = date.get(Calendar.MONTH);
         int day = date.get(Calendar.DATE);
         this.setTimeFormat(this.Floating);
-        ArrayList<String> results = getDatePrayerTimes(year, month+1, day, latitude, longitude, tZone);
-        
+        ArrayList<String> results = getDatePrayerTimes(year, month + 1, day,
+                latitude, longitude, tZone);
+
         AthanTime athanTime = new AthanTime();
         athanTime.setFajr(floatToTime24(Double.parseDouble(results.get(0))));
         athanTime.setSunrise(floatToTime24(Double.parseDouble(results.get(1))));
@@ -418,61 +445,62 @@ public class AthanTimeCalculator {
 
     // set the angle for calculating Fajr
     public void setFajrAngle(double angle) {
-        double[] params = {angle, -1, -1, -1, -1};
+        double[] params = { angle, -1, -1, -1, -1 };
         setCustomParams(params);
     }
 
     // set the angle for calculating Maghrib
     public void setMaghribAngle(double angle) {
-        double[] params = {-1, 0, angle, -1, -1};
+        double[] params = { -1, 0, angle, -1, -1 };
         setCustomParams(params);
 
     }
 
     // set the angle for calculating Isha
     public void setIshaAngle(double angle) {
-        double[] params = {-1, -1, -1, 0, angle};
+        double[] params = { -1, -1, -1, 0, angle };
         setCustomParams(params);
 
     }
 
     // set the minutes after Sunset for calculating Maghrib
     public void setMaghribMinutes(double minutes) {
-        double[] params = {-1, 1, minutes, -1, -1};
+        double[] params = { -1, 1, minutes, -1, -1 };
         setCustomParams(params);
 
     }
 
     // set the minutes after Maghrib for calculating Isha
     public void setIshaMinutes(double minutes) {
-        double[] params = {-1, -1, -1, 1, minutes};
+        double[] params = { -1, -1, -1, 1, minutes };
         setCustomParams(params);
 
     }
 
     // convert double hours to 24h format
     public DayTime floatToTime24(double time) {
-//
-//        String result;
-//
-//        if (Double.isNaN(time)) {
-//            return InvalidTime;
-//        }
+        //
+        // String result;
+        //
+        // if (Double.isNaN(time)) {
+        // return InvalidTime;
+        // }
 
         time = fixhour(time + 0.5 / 60.0); // add 0.5 minutes to round
-        int hours = (int)Math.floor(time);
+        int hours = (int) Math.floor(time);
         double minutes = Math.floor((time - hours) * 60.0);
 
-//        if ((hours >= 0 && hours <= 9) && (minutes >= 0 && minutes <= 9)) {
-//            result = "0" + hours + ":0" + Math.round(minutes);
-//        } else if ((hours >= 0 && hours <= 9)) {
-//            result = "0" + hours + ":" + Math.round(minutes);
-//        } else if ((minutes >= 0 && minutes <= 9)) {
-//            result = hours + ":0" + Math.round(minutes);
-//        } else {
-//            result = hours + ":" + Math.round(minutes);
-//        }
-        DayTime result = new DayTime(hours,new Double(Math.floor(minutes)).intValue(),0);
+        // if ((hours >= 0 && hours <= 9) && (minutes >= 0 && minutes <= 9)) {
+        // result = "0" + hours + ":0" + Math.round(minutes);
+        // } else if ((hours >= 0 && hours <= 9)) {
+        // result = "0" + hours + ":" + Math.round(minutes);
+        // } else if ((minutes >= 0 && minutes <= 9)) {
+        // result = hours + ":0" + Math.round(minutes);
+        // } else {
+        // result = hours + ":" + Math.round(minutes);
+        // }
+        DayTime result = new DayTime(hours,
+                new Double(Math.floor(minutes)).intValue(), 0);
         return result;
     }
 
@@ -484,7 +512,7 @@ public class AthanTimeCalculator {
         }
 
         time = fixhour(time + 0.5 / 60); // add 0.5 minutes to round
-        int hours = (int)Math.floor(time);
+        int hours = (int) Math.floor(time);
         double minutes = Math.floor((time - hours) * 60);
         String suffix, result;
         if (hours >= 12) {
@@ -492,10 +520,10 @@ public class AthanTimeCalculator {
         } else {
             suffix = "am";
         }
-        hours = ((((hours+ 12) -1) % (12))+ 1);
-        /*hours = (hours + 12) - 1;
-        int hrs = (int) hours % 12;
-        hrs += 1;*/
+        hours = ((((hours + 12) - 1) % (12)) + 1);
+        /*
+         * hours = (hours + 12) - 1; int hrs = (int) hours % 12; hrs += 1;
+         */
         if (noSuffix == false) {
             if ((hours >= 0 && hours <= 9) && (minutes >= 0 && minutes <= 9)) {
                 result = "0" + hours + ":0" + Math.round(minutes) + " "
@@ -548,7 +576,7 @@ public class AthanTimeCalculator {
         double Isha = this.computeTime(
                 methodParams.get(this.getCalcMethod())[4], t[6]);
 
-        double[] CTimes = {Fajr, Sunrise, Dhuhr, Asr, Sunset, Maghrib, Isha};
+        double[] CTimes = { Fajr, Sunrise, Dhuhr, Asr, Sunset, Maghrib, Isha };
 
         return CTimes;
 
@@ -556,7 +584,7 @@ public class AthanTimeCalculator {
 
     // compute prayer times at given julian date
     private ArrayList<String> computeDayTimes() {
-        double[] times = {5, 6, 12, 13, 18, 18, 18}; // default times
+        double[] times = { 5, 6, 12, 13, 18, 18, 18 }; // default times
 
         for (int i = 1; i <= this.getNumIterations(); i++) {
             times = computeTimes(times);
@@ -570,18 +598,23 @@ public class AthanTimeCalculator {
 
     // adjust times in a prayer time array
     private double[] adjustTimes(double[] times) {
+        double daylightHour = detectDaylightSaving() / 3600000D;
         for (int i = 0; i < times.length; i++) {
             times[i] += this.getTimeZone() - this.getLng() / 15;
+
+            times[i] += (daylightHour);
         }
 
         times[2] += this.getDhuhrMinutes() / 60; // Dhuhr
         if (methodParams.get(this.getCalcMethod())[1] == 1) // Maghrib
         {
-            times[5] = times[4] + methodParams.get(this.getCalcMethod())[2]/ 60;
+            times[5] = times[4] + methodParams.get(this.getCalcMethod())[2]
+                    / 60;
         }
         if (methodParams.get(this.getCalcMethod())[3] == 1) // Isha
         {
-            times[6] = times[5] + methodParams.get(this.getCalcMethod())[4]/ 60;
+            times[6] = times[5] + methodParams.get(this.getCalcMethod())[4]
+                    / 60;
         }
 
         if (this.getAdjustHighLats() != this.getNone()) {
@@ -614,8 +647,7 @@ public class AthanTimeCalculator {
         }
         return result;
     }
-    
-    
+
     public String floatToTime241(double time) {
 
         String result;
@@ -625,7 +657,7 @@ public class AthanTimeCalculator {
         }
 
         time = fixhour(time + 0.5 / 60.0); // add 0.5 minutes to round
-        int hours = (int)Math.floor(time);
+        int hours = (int) Math.floor(time);
         double minutes = Math.floor((time - hours) * 60.0);
 
         if ((hours >= 0 && hours <= 9) && (minutes >= 0 && minutes <= 9)) {
@@ -640,29 +672,33 @@ public class AthanTimeCalculator {
         return result;
     }
 
-
     // adjust Fajr, Isha and Maghrib for locations in higher latitudes
     private double[] adjustHighLatTimes(double[] times) {
         double nightTime = timeDiff(times[4], times[1]); // sunset to sunrise
 
         // Adjust Fajr
-        double FajrDiff = nightPortion(methodParams.get(this.getCalcMethod())[0]) * nightTime;
+        double FajrDiff = nightPortion(methodParams.get(this.getCalcMethod())[0])
+                * nightTime;
 
         if (Double.isNaN(times[0]) || timeDiff(times[0], times[1]) > FajrDiff) {
             times[0] = times[1] - FajrDiff;
         }
 
         // Adjust Isha
-        double IshaAngle = (methodParams.get(this.getCalcMethod())[3] == 0) ? methodParams.get(this.getCalcMethod())[4] : 18;
+        double IshaAngle = (methodParams.get(this.getCalcMethod())[3] == 0) ? methodParams
+                .get(this.getCalcMethod())[4] : 18;
         double IshaDiff = this.nightPortion(IshaAngle) * nightTime;
-        if (Double.isNaN(times[6]) || this.timeDiff(times[4], times[6]) > IshaDiff) {
+        if (Double.isNaN(times[6])
+                || this.timeDiff(times[4], times[6]) > IshaDiff) {
             times[6] = times[4] + IshaDiff;
         }
 
         // Adjust Maghrib
-        double MaghribAngle = (methodParams.get(this.getCalcMethod())[1] == 0) ? methodParams.get(this.getCalcMethod())[2] : 4;
+        double MaghribAngle = (methodParams.get(this.getCalcMethod())[1] == 0) ? methodParams
+                .get(this.getCalcMethod())[2] : 4;
         double MaghribDiff = nightPortion(MaghribAngle) * nightTime;
-        if (Double.isNaN(times[5]) || this.timeDiff(times[4], times[5]) > MaghribDiff) {
+        if (Double.isNaN(times[5])
+                || this.timeDiff(times[4], times[5]) > MaghribDiff) {
             times[5] = times[4] + MaghribDiff;
         }
 
@@ -671,16 +707,16 @@ public class AthanTimeCalculator {
 
     // the night portion used for adjusting times in higher latitudes
     private double nightPortion(double angle) {
-       double calc = 0;
+        double calc = 0;
 
-    if (adjustHighLats == AngleBased)
-        calc = (angle)/60.0;
-    else if (adjustHighLats == MidNight)
-        calc = 0.5;
-    else if (adjustHighLats == OneSeventh)
-        calc = 0.14286;
+        if (adjustHighLats == AngleBased)
+            calc = (angle) / 60.0;
+        else if (adjustHighLats == MidNight)
+            calc = 0.5;
+        else if (adjustHighLats == OneSeventh)
+            calc = 0.14286;
 
-    return calc;
+        return calc;
     }
 
     // convert hours to day portions
@@ -726,20 +762,21 @@ public class AthanTimeCalculator {
         prayers.setCalcMethod(prayers.Jafari);
         prayers.setAsrJuristic(prayers.Shafii);
         prayers.setAdjustHighLats(prayers.AngleBased);
-        int[] offsets = {0, 0, 0, 0, 0, 0, 0}; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
+        int[] offsets = { 0, 0, 0, 0, 0, 0, 0 }; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
         prayers.tune(offsets);
 
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(now);
-        System.out.println(cal.get(Calendar.YEAR) + " " + cal.get(Calendar.MONTH)+ " " + cal.get(Calendar.DATE) );
-//        ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal,
-//                latitude, longitude, timezone);
-//        ArrayList<String> prayerNames = prayers.getTimeNames();
-//
-//        for (int i = 0; i < prayerTimes.size(); i++) {
-//            System.out.println(prayerNames.get(i) + " - " + prayerTimes.get(i));
-//        }
+        System.out.println(cal.get(Calendar.YEAR) + " "
+                + cal.get(Calendar.MONTH) + " " + cal.get(Calendar.DATE));
+        // ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal,
+        // latitude, longitude, timezone);
+        // ArrayList<String> prayerNames = prayers.getTimeNames();
+        //
+        // for (int i = 0; i < prayerTimes.size(); i++) {
+        // System.out.println(prayerNames.get(i) + " - " + prayerTimes.get(i));
+        // }
 
     }
 

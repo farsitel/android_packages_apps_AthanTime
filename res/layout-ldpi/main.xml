@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2011 Iranian Supreme Council of ICT, The FarsiTel Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASICS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:background="@drawable/background"
+	android:layout_height="fill_parent"
 	android:id="@+id/layout">
 	<com.farsitel.athantime.views.PanelSwitcher
 		android:id="@+id/panelswitch" android:layout_width="fill_parent"
-		android:layout_marginTop="70px" android:layout_marginRight="30px"
-		android:layout_marginLeft="30px"
+		android:background="@drawable/background"
+		android:paddingTop="55px" android:paddingRight="30px"
+		android:paddingLeft="30px"
 		android:layout_height="fill_parent" android:layout_weight="4">
 		<LinearLayout android:id="@+id/tabcontent"
 			android:layout_width="fill_parent" android:layout_height="fill_parent">
@@ -71,7 +86,6 @@
 					<TableRow>
 						<Button
 							android:background="@drawable/arrow_forward"
-							android:gravity="center"
 							android:id="@+id/nextBtn"
 						/>
 					</TableRow>
@@ -146,8 +160,8 @@
 			</LinearLayout>
 		</LinearLayout>
 	</com.farsitel.athantime.views.PanelSwitcher>
-	<ImageView
-		android:layout_width="320dp" android:layout_height="48dp"
-		android:layout_gravity="top"
-		android:src="@color/red" />
+    <com.farsitel.adad.AdView android:id="@+id/ad"
+                              android:layout_width="fill_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_gravity="top" />
 </LinearLayout>
